@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  nodejs:
+    container_name: imager
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    networks:
+      frontend:
+        ipv4_address: 172.38.0.2
+    ports:
+      - 3030:3030
+    volumes:
+      - ./imager:/src
+      - /var/www:/var/www
+    command: sh -c "npm i && npm run build && npm run start"
+    tty: true
+
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.38.0.0/24
+          gateway: 172.38.0.1

@@ -1,0 +1,44 @@
+{
+  "name": "nitro-imager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "dependencies": {
+    "bytebuffer": "^5.0.1",
+    "canvas": "^2.10.2",
+    "cli-color": "^2.0.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "gifencoder": "^2.0.1",
+    "node-fetch": "^2.0.0",
+    "pako": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/bytebuffer": "^5.0.44",
+    "@types/cli-color": "^2.0.2",
+    "@types/express": "^4.17.15",
+    "@types/gifencoder": "^2.0.1",
+    "@types/node": "^18.11.15",
+    "@types/pako": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
+    "eslint": "^8.29.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.4"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "start:dev": "ts-node-dev --respawn --transpile-only ./src/main.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://git.krews.org/nitro/nitro-imager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://git.krews.org/nitro/nitro-imager/issues"
+  },
+  "homepage": "https://git.krews.org/nitro/nitro-imager"
+}
