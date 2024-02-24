@@ -132,6 +132,7 @@ server {
         
         root /var/www/cms/public;
         index index.php index.html index.htm;
+
         location / {
         try_files $uri $uri/ /index.php?$query_string;
         limit_conn addr 10;
