@@ -22,11 +22,17 @@ When starting from scratch, this would be the recomended order :
 
 **Big Thanks to:**  
 Dennis⚡(Object) (Atom CMS)
+
 iNicollas (OrionCMS)
+
 Nitro Team for the Client
+
 Krews Team for the Emulator  
+
 TheGeneral (Initial base DB)  
+
 TenShie (Crackables, Soundtracks, Crafting, TargedOffers, Roombundles, Calendar)  
+
 Skeletor for the group bagde imager  
 
 :white_check_mark: Setup VPS / Atom or OrionCMS/ Arcturus Database : 100%  
