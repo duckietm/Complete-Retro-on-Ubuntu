@@ -39,7 +39,7 @@ Next install the CMS:
 
 ```
 composer install # Press enter by [yes]
-yern install && npm build
+yarn install && yarn build
 php artisan key:generate
 php artisan migrate --seed
 chown -R www-data:www-data /var/www/cms/
