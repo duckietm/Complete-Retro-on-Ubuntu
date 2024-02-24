@@ -128,7 +128,7 @@ server {
         access_log /var/log/nginx/cms.log custom;
         error_log /var/log/nginx/cms_error.log;
 
-        server_name ###URL###;
+        server_name ### Domain Expl: mydomain.com www.mydomain.com ###;
         
         root /var/www/cms/public;
         index index.php index.html index.htm;
