@@ -8,7 +8,7 @@ cd cms
 cp .env.example .env
 ```
 
-No edit all the settings like URL / Database settings etc. in the .env: vi /var/www/cms/.env
+Now edit all the settings like URL / Database settings etc. in the .env: vi /var/www/cms/.env
 
 Make it look like so:
 ```
