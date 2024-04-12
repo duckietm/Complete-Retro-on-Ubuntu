@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   nodejs:
     container_name: imager
