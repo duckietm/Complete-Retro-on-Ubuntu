@@ -34,11 +34,11 @@ NITRO_STATIC_PATH (e.g. /var/www/static.domain.com)
 
 Next install the CMS:
 ```
+cd /var/www/atomcms
 composer install # Press enter by [yes]
 php artisan key:generate
 php artisan storage:link
 chown -R www-data:www-data /var/www/atomcms/
-cd /var/www/atomcms
 chmod -R 775 storage
 chmod -R 775 bootstrap/cache
 php artisan migrate
