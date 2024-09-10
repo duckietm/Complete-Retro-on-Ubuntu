@@ -13,36 +13,38 @@ No edit all the settings like URL / Database settings etc. in the .env: vi /var/
 
 Make it look like so:
 ```
-APP_NAME="AtomCMS"
+APP_NAME="Habbo Hotel"
 APP_ENV=production
-APP_KEY=
 APP_DEBUG=false
-APP_URL=https://mydomain.com
-
-LOG_CHANNEL=stack
-LOG_DEPRECATIONS_CHANNEL=null
-LOG_LEVEL=error
-
-# Change those to match your database settings
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=habbo
-DB_USERNAME=cms
-DB_PASSWORD="YOUR PASSWORD"
+APP_URL="https://habbo.com"
+DB_DATABASE="atom"
+DB_USERNAME="root"
+DB_PASSWORD="password"
+TINYMCE_API_KEY="TINYMCEKEYHERE"
+TURNSTILE_ENABLED=true
+TURNSTILE_SITE_KEY="TURNSTILEKEY"
+TURNSTILE_SECRET_KEY="TURNSTILESECRET"
+FINDRETROS_NAME="habbohotel"
+FINDRETROS_ENABLED=true # true or false
+NITRO_IMAGER_URL (e.g. https://www.habbo.com/habbo-imaging/avatarimage)
+NITRO_STATIC_URL (e.g. https://static.domain.com)
+NITRO_CLIENT_URL (e.g. http://nitro.habhub.net)
+NITRO_STATIC_PATH (e.g. /var/www/static.domain.com)
 ```
 
 Next install the CMS:
 
 ```
 composer install # Press enter by [yes]
-npm install && npm run build:atom # (For development run: npm run dev:[theme-name] - eg. npm run dev:atom)
 php artisan key:generate
-php artisan migrate --seed
+php artisan storage:link
 chown -R www-data:www-data /var/www/atomcms/
 cd /var/www/atomcms
 chmod -R 775 storage
 chmod -R 775 bootstrap/cache
+php artisan migrate
+yarn install
+yarn build
 ```
 
 NGINX Setup
@@ -186,5 +188,39 @@ Now lets bind the config to nginx:
 ```ln -s /etc/nginx/sites-available/cms.conf /etc/nginx/sites-enabled/```
 
 restart nginx and test your site : ```/etc/init.d/nginx restart```
-
 If there is something wrong just run : ```nginx -t``` and it will show you what is going on.
+
+Now Run through the installer of AtomCMS <== The license key can be found in the Database ```SELECT * FROM website_installation;```
+
+```
+cd /var/www/atomcms
+yarn link:atom or npm run link:atom
+yarn build:atom or npm run build:atom
+```
+
+Then we link the configuration files and images
+
+```
+php artisan atom:sync-backgrounds
+php artisan atom:sync-badges
+php artisan atom:sync-catalog-images
+php artisan atom:sync-furniture-data
+php artisan atom:sync-product-data
+php artisan atom:sync-ui-texts
+``` 
+
+How to import changes (so when there is an update on the GIT of Atom)
+
+Pull down the latest changes
+```git pull```
+
+Update the packages
+```composer update```
+
+Rebuild the theme (if any changes to the UI are made)
+```yarn build:atom```
+
+Run the migrations
+```php artisan migrate```
+
+Please use discord to see all the latest developments of Atom at : https://discord.com/channels/1008150166521524264/1008492048854298705
