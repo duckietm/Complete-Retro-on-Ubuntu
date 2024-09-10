@@ -9,7 +9,7 @@ cd atomcms
 cp .env.example .env
 ```
 
-No edit all the settings like URL / Database settings etc. in the .env: vi /var/www/atomcms/.env
+Now edit all the settings like URL / Database settings etc. in the .env: vi /var/www/atomcms/.env
 
 Make it look like so:
 ```
@@ -33,7 +33,6 @@ NITRO_STATIC_PATH (e.g. /var/www/static.domain.com)
 ```
 
 Next install the CMS:
-
 ```
 composer install # Press enter by [yes]
 php artisan key:generate
@@ -57,7 +56,6 @@ vi /etc/nginx/nginx.conf
 ```
 
 Paste the following in the nginx.conf (First press the letter i before pasting you will see in the left corner the text -- INSERT --)
-
 ```
 user www-data;
 worker_processes auto;
@@ -147,14 +145,12 @@ server {
 ```
 
 We will make a script for Cloudflare to access with RealIP in the logs
-
 ```
 mkdir /var/scripts
 vi /var/scripts/CF_Refresh.cf
 ```
 
 Paste the following config:
-
 ```
 #!/bin/bash
 
@@ -178,7 +174,6 @@ nginx -t && systemctl reload nginx
 ```
 
 Now make it executable and run the script
-
 ```
 chmod +x /var/scripts/CF_Refresh.cf
 /var/scripts/CF_Refresh.sh
@@ -191,7 +186,6 @@ restart nginx and test your site : ```/etc/init.d/nginx restart```
 If there is something wrong just run : ```nginx -t``` and it will show you what is going on.
 
 Now Run through the installer of AtomCMS <== The license key can be found in the Database ```SELECT * FROM website_installation;```
-
 ```
 cd /var/www/atomcms
 yarn link:atom or npm run link:atom
@@ -199,7 +193,6 @@ yarn build:atom or npm run build:atom
 ```
 
 Then we link the configuration files and images
-
 ```
 php artisan atom:sync-backgrounds
 php artisan atom:sync-badges
