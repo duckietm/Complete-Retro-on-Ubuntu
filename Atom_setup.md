@@ -216,4 +216,4 @@ Rebuild the theme (if any changes to the UI are made)
 Run the migrations
 ```php artisan migrate```
 
-Please use discord to see all the latest developments of Atom at : https://discord.com/channels/1008150166521524264/1008492048854298705
+Please use discord to see all the latest developments of Atom at : https://discord.gg/HEqEwK2B
