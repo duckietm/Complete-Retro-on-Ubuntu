@@ -194,6 +194,7 @@ yarn build:atom or npm run build:atom
 
 Then we link the configuration files and images
 ```
+php artisan atom:import-badges
 php artisan atom:sync-backgrounds
 php artisan atom:sync-badges
 php artisan atom:sync-catalog-images
