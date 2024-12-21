@@ -1,7 +1,7 @@
 # Setup the Nitro Imager, this will render all the avatars from your reposotory  
 Before continue make sure you have the CMS installed and verify that it is running  
 
-## Nitro Imager with Node V19
+## Nitro Imager with Node V20
 
 Copy the content to example : /docker/nitro_imager you will find this in the Docker folder
 
