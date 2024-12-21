@@ -1,8 +1,9 @@
 export interface IPartColor
 {
-    id: number;
+    id: any;
     index: number;
     clubLevel: number;
     isSelectable: boolean;
     rgb: number;
+	hex: string;
 }

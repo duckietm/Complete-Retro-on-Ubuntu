@@ -145,7 +145,7 @@ export const HttpRouter = async (request: Request<any, any, any, RequestQuery>, 
 
             if(encoder)
             {
-                encoder.addFrame(tempCtx);
+                encoder.addFrame(tempCtx as any);
             }
             else
             {

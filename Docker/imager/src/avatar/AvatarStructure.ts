@@ -9,7 +9,7 @@ import { IAvatarFigureContainer } from './IAvatarFigureContainer';
 import { IAvatarImage } from './IAvatarImage';
 import { IAvatarRenderManager } from './IAvatarRenderManager';
 import { IFigureData } from './interfaces';
-import { AnimationAction, AvatarAnimationData, AvatarAnimationFrame, AvatarCanvas, FigureSetData, IFigurePartSet, IPartColor, IStructureData, PartSetsData } from './structure';
+import { AnimationAction, AvatarAnimationData, AvatarAnimationFrame, AvatarCanvas, FigureSetData, IFigurePartSet, IPartColor, IStructureData, PartColor, PartSetsData } from './structure';
 
 export class AvatarStructure
 {
@@ -427,6 +427,11 @@ export class AvatarStructure
                                 if(_local_29 && (_local_29.length > (_local_33.colorLayerIndex - 1)))
                                 {
                                     _local_36 = _local_31.getColor(_local_29[(_local_33.colorLayerIndex - 1)]);
+
+									if(!_local_36){
+                                        const id: any = _local_29[(_local_33.colorLayerIndex - 1)];
+                                        _local_36 = new PartColor(null, id, _local_33.colorLayerIndex);
+                                    }
                                 }
 
                                 const _local_37 = (_local_33.colorLayerIndex > 0);

@@ -14,18 +14,18 @@ export class AvatarImagePartContainer
     private _isBlendable: boolean;
     private _paletteMapId: number;
 
-    constructor(k: string, _arg_2: string, _arg_3: string, _arg_4: IPartColor, _arg_5: AvatarAnimationFrame[], _arg_6: IActionDefinition, _arg_7: boolean, _arg_8: number, _arg_9: string = '', _arg_10: boolean = false, _arg_11: number = 1)
+    constructor(bodyPartId: string, partType: string, partId: string, partColor: IPartColor, frames: AvatarAnimationFrame[], action: IActionDefinition, isColorable: boolean, paletteMapId: number, flippedPartType: string = '', isBlendable: boolean = false, _arg_11: number = 1)
     {
-        this._bodyPartId = k;
-        this._partType = _arg_2;
-        this._partId = _arg_3;
-        this._color = _arg_4;
-        this._frames = _arg_5;
-        this._action = _arg_6;
-        this._isColorable = _arg_7;
-        this._paletteMapId = _arg_8;
-        this._flippedPartType = _arg_9;
-        this._isBlendable = _arg_10;
+        this._bodyPartId = bodyPartId;
+        this._partType = partType;
+        this._partId = partId;
+        this._color = partColor;
+        this._frames = frames;
+        this._action = action;
+        this._isColorable = isColorable;
+        this._paletteMapId = paletteMapId;
+        this._flippedPartType = flippedPartType;
+        this._isBlendable = isBlendable;
 
         if(this._partType === 'ey') this._isColorable = false;
     }
@@ -128,6 +128,6 @@ export class AvatarImagePartContainer
 
     public toString(): string
     {
-        return [ this._bodyPartId, this._partType, this._partId ].join(':');
+        return [this._bodyPartId, this._partType, this._partId].join(':');
     }
 }

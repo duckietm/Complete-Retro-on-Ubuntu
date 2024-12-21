@@ -1,4 +1,3 @@
-
 import * as dotenv from 'dotenv';
 import express from 'express';
 import { AvatarRenderManager } from './avatar';
@@ -18,7 +17,8 @@ async function init(): Promise<void>
 
         const router = express();
 
-        router.get('/imaging', HttpRouter);
+        const urlpath = (process.env.IMAGER_PATH as string);
+	router.get(urlpath, HttpRouter);
 
         const host = (process.env.API_HOST as string);
         const port = parseInt(process.env.API_PORT);
