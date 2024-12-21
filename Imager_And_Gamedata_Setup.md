@@ -27,25 +27,71 @@ Example:
 
 ```yml
 services:
-  nodejs:
-    container_name: imager
-    build:
-      context: ./
-      target: imager
+  node:
+    image: node:20.18.1
+    container_name: habbo_imager
+    working_dir: /src
+    ports:
+      - "3030:3030" # Maps port 3000 of the host to port 3000 of the container
+    stdin_open: true # Keeps the container open to accept input
+    tty: true        # Enables an interactive terminal
+    # command: sh -c "yarn start"
+    networks:
+      frontend:
+        ipv4_address: 172.38.0.2
+
+    environment:
+      - YARN_CACHE_FOLDER=/src/app/.yarn-cache # Optional: Set cache folder inside the app directory
+
     volumes:
       - ./imager:/src
-      - /var/www:/var/www # Path to your data
-    command: sh -c "npm run start" # Change this after the first startup of the docker !
-    tty: true
-```
+      - /var/www:/var/www
 
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.38.0.0/24
+          gateway: 172.38.0.1
+```
 Now you can run : docker-compose up -d 
-
-and this will build and make the imager avalible on port 3030
-
-to use it use the following in nginx:
-
+Next we need to connect to the imager to compile the source
+```cmd
+docker exec -it habbo_imager bash
 ```
+This will connect to the docker and we can do the following commands:
+```cmd
+yarn install && yarn build
+```
+Now test the build in the console:
+```cmd
+yarn start
+```
+It should show the following output:
+```text
+ [Nitro] Starting Nitro Imager
+ [Nitro] Loading: /var/www/Gamedata/clothes/hh_human_body.nitro
+ [Nitro] Loading: /var/www/Gamedata/clothes/hh_human_item.nitro
+ [Nitro] Loading: /var/www/Gamedata/effect/Dance1.nitro
+ [Nitro] Loading: /var/www/Gamedata/effect/Dance2.nitro
+ [Nitro] Loading: /var/www/Gamedata/effect/Dance3.nitro
+ [Nitro] Loading: /var/www/Gamedata/effect/Dance4.nitro
+ [Nitro] Server Started habbo_imager:3030
+```
+We now have a good working imager, so now press CTRL+C and type exit.
+This will take us out of the console and back to the shh shell of the server.
+Next stop the docker : ```docker compose stop```
+Now edit the docker-compose.yml and uncomment the following:
+```text
+    tty: true        # Enables an interactive terminal
+    command: sh -c "yarn start"   # Start the imager  
+    networks:
+```
+you can check if all has started as it should by looking at the logs : ```docker logs habbo_imager```
+
+Next to use it use the following in nginx:
+```yml
 location /imaging/ {
         proxy_pass http://172.38.0.2:3030;
         proxy_set_header Host $host;
