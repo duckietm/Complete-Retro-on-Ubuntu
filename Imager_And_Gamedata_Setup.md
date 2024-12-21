@@ -12,7 +12,7 @@ But if you host your CMS on a other server you can replace the absoulte path wit
 
 Example :
 ```env
-API_HOST=imager
+API_HOST=habbo_imager
 API_PORT=3030
 AVATAR_SAVE_PATH=/src/saved_figure
 AVATAR_ACTIONS_URL=/var/www/Gamedata/config/HabboAvatarActions.json
