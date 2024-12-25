@@ -1,23 +1,23 @@
 services:
   node:
-    image: node:20.18.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: habbo_imager
     working_dir: /src
     ports:
-      - "3031:3031" # Maps port 3000 of the host to port 3000 of the container
-    stdin_open: true # Keeps the container open to accept input
-    tty: true        # Enables an interactive terminal
-    command: sh -c "npm run start"
+      - "3030:3030"
+    stdin_open: true
+    tty: true
     networks:
       frontend:
         ipv4_address: 172.38.0.2
-
     environment:
-      - YARN_CACHE_FOLDER=/src/app/.yarn-cache # Optional: Set cache folder inside the app directory
-
+      - YARN_CACHE_FOLDER=/src/app/.yarn-cache
     volumes:
       - ./imager:/src
       - /var/www:/var/www
+    # command: sh -c "yarn start"
 
 networks:
   frontend:
@@ -26,3 +26,4 @@ networks:
       config:
         - subnet: 172.38.0.0/24
           gateway: 172.38.0.1
+

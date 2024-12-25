@@ -28,24 +28,24 @@ Example:
 ```yml
 services:
   node:
-    image: node:20.18.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: habbo_imager
     working_dir: /src
     ports:
-      - "3030:3030" # Maps port 3000 of the host to port 3000 of the container
-    stdin_open: true # Keeps the container open to accept input
-    tty: true        # Enables an interactive terminal
-    # command: sh -c "yarn start"
+      - "3030:3030"
+    stdin_open: true
+    tty: true
     networks:
       frontend:
         ipv4_address: 172.38.0.2
-
     environment:
-      - YARN_CACHE_FOLDER=/src/app/.yarn-cache # Optional: Set cache folder inside the app directory
-
+      - YARN_CACHE_FOLDER=/src/app/.yarn-cache
     volumes:
       - ./imager:/src
       - /var/www:/var/www
+    # command: sh -c "yarn start"
 
 networks:
   frontend:
@@ -84,9 +84,10 @@ This will take us out of the console and back to the shh shell of the server.
 Next stop the docker : ```docker compose stop```
 Now edit the docker-compose.yml and uncomment the following:
 ```text
-    tty: true        # Enables an interactive terminal
-    command: sh -c "yarn start"   # Start the imager  
-    networks:
+    volumes:
+      - ./imager:/src
+      - /var/www:/var/www
+    command: sh -c "yarn start" # This will start the imager
 ```
 you can check if all has started as it should by looking at the logs : ```docker logs habbo_imager```
 

@@ -1,5 +1,4 @@
 import { readFile } from 'fs';
-import fetch from 'node-fetch';
 import { promisify } from 'util';
 import { NitroLogger } from '../NitroLogger';
 import { File } from './File';
@@ -34,6 +33,7 @@ export class FileUtilities
 
         if(url.startsWith('http'))
         {
+            const fetch = (await import('node-fetch')).default;
             const data = await fetch(url);
 
             if(data.status !== 200) throw new Error(`File not found: ${ url }`);
@@ -56,6 +56,7 @@ export class FileUtilities
 
         if(url.startsWith('http'))
         {
+            const fetch = (await import('node-fetch')).default;
             const data = await fetch(url);
 
             if(data.status !== 200) throw new Error(`File not found: ${ url }`);
