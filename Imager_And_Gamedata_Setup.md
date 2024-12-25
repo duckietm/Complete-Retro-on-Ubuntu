@@ -21,10 +21,9 @@ AVATAR_FIGUREMAP_URL=/var/www/Gamedata/config/FigureMap.json
 AVATAR_EFFECTMAP_URL=/var/Gamedata/config/EffectMap.json
 AVATAR_ASSET_URL=/var/www/Gamedata/clothes/%libname%.nitro
 ```
-Next make the path avalibe in /docker/nitro_imager/docker-compose.yml
+Next go the path where you made the docker avalibe in my example : /docker/nitro_imager/docker-compose.yml
 
 Example:
-
 ```yml
 services:
   node:
@@ -55,7 +54,7 @@ networks:
         - subnet: 172.38.0.0/24
           gateway: 172.38.0.1
 ```
-Now you can run : docker-compose up -d 
+Now in the ssh shell you can run : docker-compose up -d 
 Next we need to connect to the imager to compile the source
 ```cmd
 docker exec -it habbo_imager bash
