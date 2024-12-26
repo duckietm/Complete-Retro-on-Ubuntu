@@ -34,36 +34,33 @@ export class NitroBundle
     }
 
     private async parse(arrayBuffer: ArrayBuffer): Promise<void>
-    {
-        const binaryReader = wrap(arrayBuffer);
-
-        let fileCount = binaryReader.readShort();
-
-        while(fileCount > 0)
-        {
-            const fileNameLength = binaryReader.readShort();
-            const fileName = binaryReader.readString(fileNameLength);
-            const fileLength = binaryReader.readInt();
-            const buffer = binaryReader.readBytes(fileLength);
-
-            if(fileName.endsWith('.json'))
-            {
-                const decompressed = inflate((buffer.toArrayBuffer() as Data));
-
-                this._jsonFile = JSON.parse(NitroBundle.TEXT_DECODER.decode(decompressed));
-            }
-            else
-            {
-                const decompressed = inflate((buffer.toArrayBuffer() as Data));
-                const base64 = NitroBundle.arrayBufferToBase64(decompressed);
-                const baseTexture = await loadImage('data:image/png;base64,' + base64);
-
-                this._baseTexture = baseTexture;
-            }
-
-            fileCount--;
-        }
-    }
+	{
+		const binaryReader = wrap(arrayBuffer);
+		let fileCount = binaryReader.readShort();
+		
+		while (fileCount > 0)
+			{
+			const fileNameLength = binaryReader.readShort();
+			const fileName = binaryReader.readString(fileNameLength);
+			const fileLength = binaryReader.readInt();
+			const buffer = binaryReader.readBytes(fileLength);
+		
+			if (fileName.endsWith('.json'))
+			{
+				const decompressed = inflate((buffer.toArrayBuffer() as Data));
+				this._jsonFile = JSON.parse(NitroBundle.TEXT_DECODER.decode(decompressed));
+			}
+			else
+			{
+				const decompressed = inflate((buffer.toArrayBuffer() as Data));
+				const base64 = NitroBundle.arrayBufferToBase64(decompressed.buffer.slice(0) as ArrayBuffer);
+				
+				const baseTexture = await loadImage('data:image/png;base64,' + base64);
+				this._baseTexture = baseTexture;
+			}
+			fileCount--;
+		}
+	}
 
     public get jsonFile(): IAssetData
     {

@@ -86,7 +86,7 @@ export class AssetManager
         for(const url of assetUrls)
         {
             const buffer = await FileUtilities.readFileAsBuffer(url);
-            const bundle = await NitroBundle.from(buffer);
+            const bundle = await NitroBundle.from(buffer.slice(0).buffer);
 
             this.createCollectionFromNitroBundle(bundle);
         }
