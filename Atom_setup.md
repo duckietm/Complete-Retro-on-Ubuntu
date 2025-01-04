@@ -196,7 +196,7 @@ Now Run through the installer of AtomCMS <== The license key can be found in the
 
 - Update the packages : ```composer update```
 
-- Rebuild the theme (if any changes to the UI are made) : ```yarn build:atom```
+- Rebuild the theme (when changes are made to the frontend) : ```yarn build:atom```
 
 - Run the migrations : ```php artisan migrate```
 
