@@ -186,29 +186,15 @@ restart nginx and test your site : ```/etc/init.d/nginx restart```
 If there is something wrong just run : ```nginx -t``` and it will show you what is going on.
 
 Now Run through the installer of AtomCMS <== The license key can be found in the Database ```SELECT * FROM website_installation;```
-```
-cd /var/www/atomcms
-yarn link:atom or npm run link:atom
-yarn build:atom or npm run build:atom
-```
 
-Then we link the configuration files and images
-```
-php artisan atom:import-badges
-php artisan atom:sync-backgrounds
-php artisan atom:sync-badges
-php artisan atom:sync-catalog-images
-php artisan atom:sync-furniture-data
-php artisan atom:sync-product-data
-php artisan atom:sync-ui-texts
-``` 
+#Updates
 
 How to import changes (so when there is an update on the GIT of Atom)
 
-Pull down the latest changes
+Pull down the latest changes:
 ```git pull```
 
-Update the packages
+Update the packages:
 ```composer update```
 
 Rebuild the theme (if any changes to the UI are made)
