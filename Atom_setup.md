@@ -195,13 +195,10 @@ Now Run through the installer of AtomCMS <== The license key can be found in the
 - How to import changes (so when there is an update on the GIT of Atom)
 Pull down the latest changes: ```git pull```
 
-- Update the packages
-```composer update```
+- Update the packages : ```composer update```
 
-- Rebuild the theme (if any changes to the UI are made)
-```yarn build:atom```
+- Rebuild the theme (if any changes to the UI are made) : ```yarn build:atom```
 
-- Run the migrations
-```php artisan migrate```
+- Run the migrations : ```php artisan migrate```
 
 Please use discord to see all the latest developments of Atom at : https://discord.gg/HEqEwK2B
