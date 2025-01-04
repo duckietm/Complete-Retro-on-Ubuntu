@@ -1,4 +1,5 @@
-### AtomCMS Setup - Linux NGINX latest mainline version
+### AtomCMS Setup
+# Linux NGINX latest mainline version
 
 ```
 cd /var/www/
