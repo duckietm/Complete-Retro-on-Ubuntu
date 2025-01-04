@@ -1,4 +1,4 @@
-AtomCMS Setup - Linux NGINX latest mainline version
+### AtomCMS Setup - Linux NGINX latest mainline version
 
 ```
 cd /var/www/
@@ -9,7 +9,7 @@ cd atomcms
 cp .env.example .env
 ```
 
-Now edit all the settings like URL / Database settings etc. in the .env: vi /var/www/atomcms/.env
+# Now edit all the settings like URL / Database settings etc. in the .env: vi /var/www/atomcms/.env
 
 Make it look like so:
 ```
@@ -32,7 +32,7 @@ NITRO_CLIENT_URL (e.g. http://nitro.habhub.net)
 NITRO_STATIC_PATH (e.g. /var/www/static.domain.com)
 ```
 
-Next install the CMS:
+# Next install the CMS:
 ```
 cd /var/www/atomcms
 composer install # Press enter by [yes]
@@ -46,7 +46,7 @@ yarn install
 yarn build:atom
 ```
 
-NGINX Setup
+# NGINX Setup
 ```
 cd /etc/nginx
 >nginx.conf
@@ -55,7 +55,8 @@ rm sites-enabled/default
 vi /etc/nginx/nginx.conf
 ```
 
-Paste the following in the nginx.conf (First press the letter i before pasting you will see in the left corner the text -- INSERT --)
+# Paste the following in the nginx.conf
+(First press the letter i before pasting you will see in the left corner the text -- INSERT --)
 ```
 user www-data;
 worker_processes auto;
@@ -144,6 +145,7 @@ server {
 }
 ```
 
+# Cloudflare
 We will make a script for Cloudflare to access with RealIP in the logs
 ```
 mkdir /var/scripts
@@ -187,20 +189,18 @@ If there is something wrong just run : ```nginx -t``` and it will show you what 
 
 Now Run through the installer of AtomCMS <== The license key can be found in the Database ```SELECT * FROM website_installation;```
 
-#Updates
+## Updates
 
-How to import changes (so when there is an update on the GIT of Atom)
+- How to import changes (so when there is an update on the GIT of Atom)
+Pull down the latest changes: ```git pull```
 
-Pull down the latest changes:
-```git pull```
-
-Update the packages:
+- Update the packages
 ```composer update```
 
-Rebuild the theme (if any changes to the UI are made)
+- Rebuild the theme (if any changes to the UI are made)
 ```yarn build:atom```
 
-Run the migrations
+- Run the migrations
 ```php artisan migrate```
 
 Please use discord to see all the latest developments of Atom at : https://discord.gg/HEqEwK2B
