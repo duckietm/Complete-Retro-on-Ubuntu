@@ -192,8 +192,7 @@ Now Run through the installer of AtomCMS <== The license key can be found in the
 
 ## Updates
 
-- How to import changes (so when there is an update on the GIT of Atom)
-Pull down the latest changes: ```git pull```
+- How to import changes from github : ```git pull```
 
 - Update the packages : ```composer update```
 
