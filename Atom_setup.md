@@ -1,5 +1,5 @@
-### AtomCMS Setup
-# Linux NGINX latest mainline version
+# AtomCMS Setup
+### Linux NGINX latest mainline version
 
 ```
 cd /var/www/
@@ -10,7 +10,7 @@ cd atomcms
 cp .env.example .env
 ```
 
-# Now edit all the settings like URL / Database settings etc. in the .env: vi /var/www/atomcms/.env
+### Now edit all the settings like URL / Database settings etc. in the .env: vi /var/www/atomcms/.env
 
 Make it look like so:
 ```
@@ -33,7 +33,7 @@ NITRO_CLIENT_URL (e.g. http://nitro.habhub.net)
 NITRO_STATIC_PATH (e.g. /var/www/static.domain.com)
 ```
 
-# Next install the CMS:
+### Next install the CMS:
 ```
 cd /var/www/atomcms
 composer install # Press enter by [yes]
@@ -47,7 +47,7 @@ yarn install
 yarn build:atom
 ```
 
-# NGINX Setup
+### NGINX Setup
 ```
 cd /etc/nginx
 >nginx.conf
@@ -56,7 +56,7 @@ rm sites-enabled/default
 vi /etc/nginx/nginx.conf
 ```
 
-# Paste the following in the nginx.conf
+### Paste the following in the nginx.conf
 (First press the letter i before pasting you will see in the left corner the text -- INSERT --)
 ```
 user www-data;
@@ -146,7 +146,7 @@ server {
 }
 ```
 
-# Cloudflare
+## Cloudflare
 We will make a script for Cloudflare to access with RealIP in the logs
 ```
 mkdir /var/scripts
