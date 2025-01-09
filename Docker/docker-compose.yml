@@ -18,6 +18,7 @@ services:
       - ./imager:/src
       - /var/www:/var/www
     # command: sh -c "yarn start"
+    restart: always
 
 networks:
   frontend:
