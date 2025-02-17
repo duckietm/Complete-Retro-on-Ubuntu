@@ -1,4 +1,4 @@
-# Install Ubuntu 22.04 Server with AtomCMS / Arcturus / Nitro Client and Imager
+# Install Ubuntu 24.04 Server with AtomCMS / Arcturus / Nitro Client and Imager
 Download link : https://ubuntu.com/download/server for Ubuntu 22.04 **jammy**
 
 ### In this tutorial we will be using an Ubuntu server 22.04 with NGINX.  
