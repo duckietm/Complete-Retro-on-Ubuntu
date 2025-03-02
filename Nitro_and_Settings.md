@@ -5,7 +5,7 @@ This is the last setup, so all other have already been done in order to get Nitr
 ## Nitro Client Setup
 
 ```shell
-git clone https://git.krews.org/nitro/nitro-react.git /source/nitro
+git clone https://github.com/billsonnn/nitro-react.git /source/nitro
 cd /source/nitro
 git checkout dev
 ```
