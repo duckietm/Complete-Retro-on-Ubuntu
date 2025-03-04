@@ -43,6 +43,7 @@ chown -R www-data:www-data /var/www/atomcms/
 chmod -R 775 storage
 chmod -R 775 bootstrap/cache
 php artisan migrate
+php artisan migrate --seed
 yarn install
 yarn build:atom
 ```
