@@ -1,4 +1,4 @@
-FROM node:22.12.0
+FROM node:23.11.0
 
 # Install required libraries for canvas
 RUN apt-get update && apt-get install -y \
