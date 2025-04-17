@@ -90,6 +90,10 @@ Copy and paste the following (press **a** before pasting)
 ```bash
 [Unit]
 Description=Morningstar Emulator
+# make sure the Database has started before the emulator can start
+After=mariadb.service
+Requires=mariadb.service
+
 [Service]
 User=root
 # The configuration file application.properties should be here:
