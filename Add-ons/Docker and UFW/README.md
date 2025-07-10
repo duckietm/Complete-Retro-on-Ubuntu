@@ -87,6 +87,8 @@ Modify the UFW configuration file `/etc/ufw/after.rules` and add the following r
     COMMIT
     # END UFW AND DOCKER
 
+Next run the following command: ```sed -i -e 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw```
+
 Using command `sudo systemctl restart ufw` or `sudo ufw reload` to restart UFW after changing the file.
 
 Now the public network can't access any published docker ports, the container and the private network can visit each other normally, and the containers can also access the external network from inside. 
