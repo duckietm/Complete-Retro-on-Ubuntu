@@ -91,6 +91,7 @@ sudo apt-get update && sudo apt-get install nodejs -y
 
 curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
 sudo php /tmp/composer-setup.php --install-dir=/usr/bin --filename=composer
+npm install --global yarn
 ```
 When there are popup screens just press OK :white_square_button:
 
