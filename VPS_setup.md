@@ -1,6 +1,6 @@
 # VPS SETUP with UBUNTU Server / NGINX and MariaDB
 
-Install a fresh copy of Ubuntu Server (22.04 is the current stable release and will be used) on your VPS/Server or use it on your Windows (WSL)
+Install a fresh copy of Ubuntu Server (24.04 is the current stable release and will be used) on your VPS/Server or use it on your Windows (WSL)
 
 More info on how to install WSL on Windows can be found here: https://learn.microsoft.com/en-us/windows/wsl/install For running a Retro hotel I do recommend using a Linux operating system as this has more advantages than the Windows platform. Example :
 
@@ -37,10 +37,10 @@ We will be installing the following on the system.
 ## NGINX
 ```
 apt install curl gnupg2 ca-certificates lsb-release dirmngr software-properties-common apt-transport-https -y
-curl -fSsL https://nginx.org/keys/nginx_signing.key | sudo gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+curl -fSsL https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 gpg --dry-run --quiet --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
-echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" | sudo tee /etc/apt/sources.list.d/nginx.list
-echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" | sudo tee /etc/apt/preferences.d/99nginx
+echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list
+echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" | tee /etc/apt/preferences.d/99nginx
 apt update -y
 apt install nginx-common -y
 apt install nginx -y
@@ -65,14 +65,14 @@ When there are popup screens just press OK :white_square_button:
 
 create the following file: vi /etc/apt/sources.list.d/mariadb.sources (First press the letter i before paste you will the see in the left corner the text -- INSERT --)
 ```
-# MariaDB 11.0 repository list - created 2023-08-05 11:18 UTC
+# MariaDB 11.8 repository list - created 2025-08-01 12:32 UTC
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
 # deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-# URIs: https://deb.mariadb.org/11.0/ubuntu
-URIs: https://ftp.nluug.nl/db/mariadb/repo/11.0/ubuntu
-Suites: jammy
+# URIs: https://deb.mariadb.org/11.8/ubuntu
+URIs: https://ftp.nluug.nl/db/mariadb/repo/11.8/ubuntu
+Suites: noble
 Components: main main/debug
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
 ```
