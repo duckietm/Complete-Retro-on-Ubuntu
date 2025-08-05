@@ -65,7 +65,7 @@ When there are popup screens just press OK :white_square_button:
 
 create the following file: vi /etc/apt/sources.list.d/mariadb.sources (First press the letter i before paste you will the see in the left corner the text -- INSERT --)
 ```
-# MariaDB 11.8 repository list - created 2025-08-01 12:32 UTC
+# MariaDB 11.8 repository list - created 2025-08-05 12:47 UTC
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
