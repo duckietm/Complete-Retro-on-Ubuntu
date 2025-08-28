@@ -141,9 +141,8 @@ server {
         location ~ \.php$ {
                 include snippets/fastcgi-php.conf;
                 fastcgi_param PHP_ADMIN_VALUE "allow_url_fopen=1";
-                fastcgi_param PHP_ADMIN_VALUE "file_uploads=0";
                 fastcgi_param PHP_VALUE open_basedir="/var/www/cms/:/tmp/";
-                fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
         }
 }
 ```
