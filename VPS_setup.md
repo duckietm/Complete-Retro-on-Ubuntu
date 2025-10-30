@@ -44,6 +44,7 @@ echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 
 apt update -y
 apt install nginx-common -y
 apt install nginx -y
+chmod +x /etc/init.d/nginx
 ```
 
 When there are popup screens just press OK :white_square_button:
