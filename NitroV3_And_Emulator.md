@@ -458,6 +458,7 @@ cd /var/www/Nitro_Render_V3
 yarn install && yarn link
 cd /var/www/Nitro-V3/
 yarn install && yarn link "@nitrots/nitro-renderer"
+yarn build
 ```
 
 When NGINX is configured correctly, you should see the UI login page.
