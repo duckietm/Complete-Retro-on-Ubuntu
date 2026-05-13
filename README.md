@@ -1,7 +1,7 @@
-# Install Ubuntu 24.04 Server with AtomCMS / Arcturus / Nitro Client and Imager
-Download link : https://ubuntu.com/download/server for Ubuntu 24.04 **noble**
+# Install Ubuntu 26.04 Server with AtomCMS / Arcturus / Nitro Client and Imager
+Download link : https://ubuntu.com/download/server for Ubuntu 26.04 **noble**
 
-### In this tutorial we will be using an Ubuntu server 24.04 with NGINX.  
+### In this tutorial we will be using an Ubuntu server 26.04 with NGINX.  
 - We will setup the emulator as a service, therefore no action is required after an reboot.
 
 So, in the end, this will:
