@@ -344,4 +344,4 @@ yarn install && yarn link "@nitrots/nitro-renderer"
 yarn build
 ```
 
-For the latest developments, join the Discord: <https://discord.gg/HEqEwK2B>
+For the latest developments, join the Discord: <https://discord.gg/4qWBDeX9m>
