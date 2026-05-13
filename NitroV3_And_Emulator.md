@@ -275,3 +275,160 @@ Now you can test it out by doing an reboot and see if the emulator start when re
 >/var/log/emulator.log
 reboot
 ```
+
+# Nitro V3 / Nitro Renderer
+
+I would recoomend to use WINSCP to edit the files as this way it is much easyer.
+So connect to the VPS and go to : /var/www/Nitro-V3/public/configuration
+Here rename all the .example to .json:
+- client-mode.json
+- hotlooks.json
+- infostand_backgrounds.json
+- news.json
+- renderer-config.json
+- ui-config.json
+
+Now Edit the renderer-config.json to :
+```json
+	"socket.url": "wss://##MY DOMAIN.COM##:2096",
+	"crypto.ws.enabled": false,
+	"crypto.ws.signing.enabled": false,
+	"crypto.ws.signing.public_key": "",
+	"api.url": "https://##MY DOMAIN.COM##:2096",
+    "asset.url": "https://##MY DOMAIN.COM##/gamedata",
+    "image.library.url": "http://##MY DOMAIN.COM##/gamedata/c_images/",
+    "hof.furni.url": "https://##MY DOMAIN.COM##",
+    "images.url": "${asset.url}/images",
+    "gamedata.url": "${asset.url}",
+    "sounds.url": "${asset.url}/sounds/%sample%.mp3",
+    "external.texts.url": [
+        "${gamedata.url}/config/ExternalTexts.json?v=1",
+        "${gamedata.url}/config/UITexts.json?v=1"
+    ],
+    "external.samples.url": "${gamedata.url}/sounds/sound_machine_sample_%sample%.mp3",
+    "furnidata.url": "${gamedata.url}/config/FurnitureData.json?v=1",
+    "productdata.url": "${gamedata.url}/config/ProductData.json?v=1",
+    "avatar.actions.url": "${gamedata.url}/config/HabboAvatarActions.json?v=1",
+    "avatar.figuredata.url": "${gamedata.url}/config/FigureData.json?v=1",
+    "avatar.figuremap.url": "${gamedata.url}/config/FigureMap.json?v=1",
+    "avatar.effectmap.url": "${gamedata.url}/config/EffectMap.json?v=1",
+    "avatar.asset.url": "${asset.url}/clothes/%libname%.nitro",
+    "avatar.asset.effect.url": "${asset.url}/effect/%libname%.nitro",
+    "furni.asset.url": "${asset.url}/furniture/%libname%.nitro",
+    "furni.asset.icon.url": "http://##MY DOMAIN.COM##/gamedata/icons/%libname%%param%_icon.png",
+    "pet.asset.url": "${asset.url}/pets/%libname%.nitro",
+    "generic.asset.url": "${asset.url}/bundled/generic/%libname%.nitro",
+    "room.asset.url": "${asset.url}/room/%libname%/%libname%.json",
+    "badge.asset.url": "${image.library.url}album1584/%badgename%.gif",
+    "badge.asset.group.url": "http://##MY DOMAIN.COM##/habbo-imaging/badge/%badgedata%",
+    "badge.asset.group.external.url": "",
+    "badge.asset.grouparts.url": "https://##MY DOMAIN.COM##/gamedata/badgeparts/badgepart_%part%.png",
+    "furni.rotation.bounce.steps": 20,
+    "furni.rotation.bounce.height": 0.0625,
+    "room.color.skip.transition": false,
+    "enable.avatar.arrow": false,
+    "system.animation.fps": 60,
+    "system.limits.fps": false,
+    "system.dispatcher.log": false,
+    "system.packet.log": false,
+    "system.pong.manually": true,
+    "system.pong.interval.ms": 20000,
+    "room.color.skip.transition": true,
+    "user.badges.group.slot.enabled": true,
+    "timezone.settings": "Europe/Amsterdam",
+    "login.screen.enabled": true,
+    "login.endpoint": "${api.url}/api/auth/login",
+    "login.register.endpoint": "${api.url}/api/auth/register",
+    "login.forgot.endpoint": "${api.url}/api/auth/forgot-password",
+    "login.logout.endpoint": "${api.url}/api/auth/logout",
+	"login.health.endpoint": "${api.url}/api/health",
+    "login.check-email.endpoint": "${api.url}/api/auth/check-email",
+    "login.check-username.endpoint": "${api.url}/api/auth/check-username",
+    "login.room_templates.endpoint": "${api.url}/api/auth/room-templates",
+	"login.remember.endpoint": "${api.url}/api/auth/remember",
+	"login.server_key.endpoint": "${api.url}/api/auth/server-key",
+	"login.sso-token.endpoint": "${api.url}/api/auth/sso-token",
+	"login.refresh.endpoint": "${api.url}/api/auth/refresh",
+	"badges.custom.list.endpoint":   "${api.url}/api/badges/custom",
+	"badges.custom.create.endpoint": "${api.url}/api/badges/custom",
+	"badges.custom.update.endpoint": "${api.url}/api/badges/custom/%badgeId%",
+	"badges.custom.delete.endpoint": "${api.url}/api/badges/custom/%badgeId%",
+	"badges.custom.texts.endpoint": "${api.url}/api/badges/custom/texts",
+	"account.change-password.endpoint": "${api.url}/api/auth/change-password",
+	"account.change-email.endpoint": "${api.url}/api/auth/change-email",
+	"account.change-username.endpoint": "${api.url}/api/auth/change-username",
+	"login.health.method": "GET",
+	"login.news.url": "${asset.url}/news/news.json",
+    "login.turnstile.enabled": false,
+    "login.turnstile.sitekey": "",
+    "avatar.mandatory.libraries": ["bd:1", "li:0"],
+    "avatar.mandatory.effect.libraries": [
+        "dance.1",
+        "dance.2",
+        "dance.3",
+        "dance.4"
+    ],
+```
+Here you can change the ##MY DOMAIN.COM## to your domain, in this case i would asume you use Cloudflare and that you made the SSL bypass rule : https://##MY DOMAIN.COM##:2096/* (and the * is required !!!)
+
+Next step is to do the ui-config:
+``` 
+	"image.library.notifications.url": "${image.library.url}notifications/%image%.png",
+    "achievements.images.url": "${image.library.url}Quests/%image%.png",
+    "camera.url": "https://##MY DOMAIN.COM##/camera/photo",
+    "thumbnails.url": "https://##MY DOMAIN.COM##/camera/photo/thumb/%thumbnail%.png",
+    "url.prefix": "",
+    "habbopages.url": "/gamedata/habbopages/",
+    "group.homepage.url": "${url.prefix}/groups/%groupid%/id",
+    "guide.help.alpha.groupid": 0,
+    "chat.viewer.height.percentage": 0.4,
+    "widget.dimmer.colorwheel": false,
+    "avatar.wardrobe.max.slots": 10,
+    "user.badges.max.slots": 5,
+    "camera.publish.disabled": false,
+    "hc.disabled": false,
+    "badge.descriptions.enabled": true,
+    "motto.max.length": 38,
+    "bot.name.max.length": 15,
+    "wired.action.bot.talk.to.avatar.max.length": 64,
+    "wired.action.bot.talk.max.length": 64,
+    "wired.action.chat.max.length": 100,
+    "wired.action.kick.from.room.max.length": 100,
+    "wired.action.mute.user.max.length": 100,
+    "game.center.enabled": false,
+	"catalog.style.new": true,
+	"show.google.ads": false,
+	"loginview": {
+        "images": {
+            "background": "${asset.url}/c_images/reception/stretch_blue.png",
+            "background.colour": "#6eadc8",
+            "sun": "${asset.url}/c_images/reception/sun.png",
+            "drape": "${asset.url}/c_images/reception/drape.png",
+            "left": "${asset.url}/c_images/reception/ts.png",
+            "right": "${asset.url}/c_images/reception/US_right.png",
+            "right.repeat": "${asset.url}/c_images/reception/US_top_right.png"
+        }
+    },
+```
+
+Next step client-mode.json, and very important to use the wesocket adress as apiBaseUrl!:
+
+```
+{
+    "distObfuscationEnabled": false,
+    "secureAssetsEnabled": false,
+    "secureApiEnabled": false,
+    "apiBaseUrl": "https://### THE WEBSOCKET ADDRESS : MY_DOMAIM:2096###",
+    "plainConfigBaseUrl": "https://###MY_DOMAIM###/configuration/",
+    "plainGamedataBaseUrl": "https://###MY_DOMAIM###/gamedata/"
+}
+``` 
+Whe this is all done we can compile the NitroV3:
+```
+cd /var/www/Nitro_Render
+yarn install && yarn link
+cd /var/www/Nitro-V3/
+yarn install && yarn link "@nitrots/nitro-renderer" 
+```
+
+When all is right configured in NGINX then you would see the UI Login page.
