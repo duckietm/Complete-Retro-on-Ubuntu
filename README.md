@@ -12,11 +12,10 @@ So, in the end, this will:
 
 When starting from scratch, this would be the recomended order :
 1. VPS Setup
-2. Atom Setup  or Orion Setup
+2. Atom Setup or UI-Gui setup (No CMS required)
 3. Imager and Gamedata setup  
 4. Cloudflare and SSL setup  
-5. Emulator setup  
-6. Nitro and settings setup
+5. NitroV3 & Emulator setup
 
 #### The only action you need to do is get a full pack of the c_images
 
@@ -24,10 +23,6 @@ When starting from scratch, this would be the recomended order :
 Dennis⚡(Object) (Atom CMS)
 
 iNicollas (OrionCMS)
-
-Nitro Team for the Client
-
-Krews Team for the Emulator  
 
 TheGeneral (Initial base DB)  
 
