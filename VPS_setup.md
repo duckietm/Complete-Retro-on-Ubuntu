@@ -24,7 +24,7 @@ We will be installing the following on the system.
 
 :point_right: MariaDB 11.0 latest stable version, look in the FAQ of the Krews DC to update the tables to use MariaDB 11
 
-:point_right: Setup the infra for AtomCMS
+:point_right: Setup the infra for AtomCMS or the build in UI-GUI (no CMS required)
 
 :point_right: The following is a requirement on your local laptop/desktop:
 
