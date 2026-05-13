@@ -2,6 +2,7 @@
 
 ## Folder structure that we recomend
 
+```
 .
 ├── Camera/
 ├── emulator/
@@ -56,7 +57,7 @@
 ├── news/
 ├── Nitro_Render/
 └── Nitro/
-
+```
 ## Get Nitro and Nitro Renderer:
 
 First run the following to get all the source in place :
