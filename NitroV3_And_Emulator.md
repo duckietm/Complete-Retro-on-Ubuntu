@@ -2,64 +2,60 @@
 
 ## Folder structure that we recomend
 
-├── Camera
-│ 
-├── emulator
-│   
-├── gamedata
-│   ├── bundled
-│   │   └── generic
-│   ├── c_images
-│   │   ├── album1584
-│   │   ├── backgrounds
-│   │   ├── catalogue
-│   │   │   ├── feature_cata
-│   │   │   └── paginascatalogo
-│   │   ├── Habbo-Stories
-│   │   ├── habbo-web-articles
-│   │   ├── level
-│   │   │   ├── backgrounds
-│   │   │   ├── furni
-│   │   │   ├── prefix
-│   │   │   └── teaser
-│   │   ├── notifications
-│   │   │   └── customwireds
-│   │   ├── playlist
-│   │   ├── Quests
-│   │   └── reception
-│   │       ├── catalogue
-│   │       └── web_promo_small
-│   ├── clothes
-│   ├── config
-│   ├── custom
-│   ├── effect
-│   ├── furniture
-│   ├── generic_custom
-│   │   ├── new
-│   │   └── org
-│   ├── habbopages
-│   │   ├── chat
-│   │   │   └── chatting
-│   │   └── navigator
-│   ├── icons
-│   ├── images
-│   │   ├── additions
-│   │   ├── events
-│   │   ├── furniextras
-│   │   ├── navigator
-│   │   │   └── models
-│   │   ├── reception
-│   │   ├── rules
-│   │   └── wallet
-│   ├── pets
-│   ├── sounds
-│   └── web_promo_small
-│
-├── news
-│   
-├── Nitro_Render 
-│  
-├── Nitro
+.
+├── Camera/
+├── emulator/
+├── gamedata/
+│   ├── bundled/
+│   │   └── generic/
+│   ├── c_images/
+│   │   ├── album1584/
+│   │   ├── backgrounds/
+│   │   ├── catalogue/
+│   │   │   ├── feature_cata/
+│   │   │   └── paginascatalogo/
+│   │   ├── Habbo-Stories/
+│   │   ├── habbo-web-articles/
+│   │   ├── level/
+│   │   │   ├── backgrounds/
+│   │   │   ├── furni/
+│   │   │   ├── prefix/
+│   │   │   └── teaser/
+│   │   ├── notifications/
+│   │   │   └── customwireds/
+│   │   ├── playlist/
+│   │   ├── Quests/
+│   │   └── reception/
+│   │       ├── catalogue/
+│   │       └── web_promo_small/
+│   ├── clothes/
+│   ├── config/
+│   ├── custom/
+│   ├── effect/
+│   ├── furniture/
+│   ├── generic_custom/
+│   │   ├── new/
+│   │   └── org/
+│   ├── habbopages/
+│   │   ├── chat/
+│   │   │   └── chatting/
+│   │   └── navigator/
+│   ├── icons/
+│   ├── images/
+│   │   ├── additions/
+│   │   ├── events/
+│   │   ├── furniextras/
+│   │   ├── navigator/
+│   │   │   └── models/
+│   │   ├── reception/
+│   │   ├── rules/
+│   │   └── wallet/
+│   ├── pets/
+│   ├── sounds/
+│   └── web_promo_small/
+├── news/
+├── Nitro_Render/
+└── Nitro/
 
 ## Get Nitro and Nitro Renderer:
 
