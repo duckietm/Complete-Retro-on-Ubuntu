@@ -55,7 +55,7 @@
 │   ├── sounds/
 │   └── web_promo_small/
 ├── news/
-├── Nitro_Render/
+├── Nitro_Render_V3/
 └── Nitro/
 ```
 
@@ -65,7 +65,7 @@ First, run the following commands to clone all the source repositories into plac
 
 ```bash
 git clone https://github.com/duckietm/Arcturus-Morningstar-Extended.git /var/www/emulator && \
-git clone https://github.com/duckietm/Nitro_Render_V3.git /var/www/Nitro_Render && \
+git clone https://github.com/duckietm/Nitro_Render_V3.git && \
 git clone https://github.com/duckietm/Nitro-V3.git
 ```
 
@@ -454,7 +454,7 @@ Next, edit `client-mode.json`. Important: use the **WebSocket address** as `apiB
 Once everything is configured, compile Nitro V3:
 
 ```shell
-cd /var/www/Nitro_Render
+cd /var/www/Nitro_Render_V3
 yarn install && yarn link
 cd /var/www/Nitro-V3/
 yarn install && yarn link "@nitrots/nitro-renderer"
