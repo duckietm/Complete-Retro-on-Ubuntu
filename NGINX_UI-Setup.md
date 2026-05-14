@@ -126,7 +126,7 @@ Paste the following into `cms.conf`. **Replace `camwijs.eu` with your own domain
 ```nginx
 map $http_origin $cors_origin {
     default                              "";
-    "~^https://(www\.)?camwijs\.eu$"     $http_origin;   # change to your domain
+    "~^https://(www\.)?example\.com$"     $http_origin;   # change to your domain (here you see example.com)
 }
 
 map $http_upgrade $connection_upgrade {
@@ -144,7 +144,7 @@ server {
     ssl_certificate     /etc/ssl/cloudflare/cert.pem;
     ssl_certificate_key /etc/ssl/cloudflare/key.pem;
 
-    server_name camwijs.eu www.camwijs.eu;          # change to your domain
+    server_name example.com www.example.com;          # change to your domain
 
     root  /var/www/Nitro-V3/dist;
     index index.php index.html index.htm;
