@@ -4,7 +4,7 @@
 
 <h1>
   <picture>
-    <img alt="Complete Retro on Ubuntu" src="https://readme-typing-svg.demolab.com?font=Press+Start+2P&size=22&duration=3000&pause=800&color=F58220&center=true&vCenter=true&width=300&lines=Complete+Retro+on+Ubuntu;Self-hosted+Hotel+Stack;Powered+by+Nitro+V3+%2B+Arcturus" />
+    <img alt="Complete Retro on Ubuntu" src="https://readme-typing-svg.demolab.com?font=Press+Start+2P&size=18&duration=3000&pause=800&color=F58220&center=true&vCenter=true&width=600&lines=Complete+Retro+on+Ubuntu;Self-hosted+Hotel+Stack;Powered+by+Nitro+V3+%2B+Arcturus" />
   </picture>
 </h1>
 
