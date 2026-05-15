@@ -24,7 +24,7 @@
   <a href="#setup-path">🚀 Setup Path</a> ·
   <a href="#status">📊 Status</a> ·
   <a href="#credits">💛 Credits</a> ·
-  <a href="https://discord.gg/HEqEwK2B">💬 Community</a>
+  <a href="#community--support">💬 Community</a>
 </p>
 
 </div>
@@ -85,9 +85,52 @@ A big thanks to everyone who made this possible:
 
 ## Community & support
 
-For questions, updates, and ongoing development, join the Atom community on Discord:
+<div align="center">
 
-<https://discord.gg/HEqEwK2B>
+Two active Discord communities support this stack — pick the one that matches your question.
+
+<table>
+<tr>
+<td align="center" width="50%">
+
+<img src="https://img.shields.io/badge/CMS-AtomCMS-F58220?style=for-the-badge&logo=laravel&logoColor=white" alt="AtomCMS Community"/>
+
+<br/><br/>
+
+**Atom Community**
+
+CMS questions, theme development,<br/>
+front-end issues, and Atom updates.
+
+<br/>
+
+<a href="https://discord.gg/HEqEwK2B">
+  <img src="https://img.shields.io/badge/Join%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Atom Discord"/>
+</a>
+
+</td>
+<td align="center" width="50%">
+
+<img src="https://img.shields.io/badge/Emulator-Nitro%20V3%20%2B%20Arcturus-E95420?style=for-the-badge&logo=java&logoColor=white" alt="NitroV3 Community"/>
+
+<br/><br/>
+
+**NitroV3 Community**
+
+Emulator help, Nitro V3 + renderer,<br/>
+Arcturus Extended, and gamedata.
+
+<br/>
+
+<a href="https://discord.gg/vhsk4wQfH">
+  <img src="https://img.shields.io/badge/Join%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join NitroV3 Discord"/>
+</a>
+
+</td>
+</tr>
+</table>
+
+</div>
 
 ---
 
