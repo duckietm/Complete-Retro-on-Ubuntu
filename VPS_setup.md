@@ -1,157 +1,192 @@
-# VPS SETUP with UBUNTU Server / NGINX and MariaDB
+# VPS Setup — Ubuntu Server, NGINX and MariaDB
 
-Install a fresh copy of Ubuntu Server (26.04 is the current stable release and will be used) on your VPS/Server or use it on your Windows (WSL)
+Install a fresh copy of **Ubuntu Server 26.04 LTS** (codename *Resolute Raccoon*, the current stable LTS release) on your VPS, or use it under Windows via WSL.
 
-More info on how to install WSL on Windows can be found here: https://learn.microsoft.com/en-us/windows/wsl/install For running a Retro hotel I do recommend using a Linux operating system as this has more advantages than the Windows platform. Example :
+More info on installing WSL on Windows: <https://learn.microsoft.com/en-us/windows/wsl/install>
 
-:earth_americas: NGINX is built for Linux systems and has been ported to Windows but will perform less due to the file system.
+For running a retro hotel, Linux is strongly recommended over Windows:
 
-:penguin: Running Linux dockers to add functions like the habbo imager, on busy hotels they can use NGINX Proxy manager
+- 🌎 **NGINX is built for Linux.** A Windows port exists, but performance suffers because of the file system.
+- 🐧 **Docker support.** Easily run helpers like a Habbo imager; busy hotels can sit behind NGINX Proxy Manager.
+- 👊 **Better service management.** Morningstar (and other emulators) integrate cleanly with `systemd`.
+- 🚤 **Higher performance.** Especially for the CMS and PHP-FPM workload.
+- 🙌 **Open source.** Tons of resources for tuning the kernel and TCP stack.
+- 💶 **No Windows license required.**
 
-:punch: Better support for running Morningstar or any other emulator as a Linux service
+> **CDN reminder:** always put your hotel behind a CDN (Cloudflare, Akamai, Fastly, etc.). Start with Cloudflare's free tier. Once you're past ~50 online users, consider Cloudflare Pro or another tier that matches your needs. **Do NOT use Cloudflare Zero Trust as your only protection** — it doesn't protect you when combined with the Cloudflare Proxy option. Zero Trust is fine for home use (NAS, Home Assistant) but not for production hotels.
 
-:speedboat: We see much better performance on Linux than on Windows, especially the CMS
+## What we'll install
 
-:open_hands: Opensource, so there are many more resources available to tune the Kernel / TCP Stack.
+- **NGINX** — high-performance web server (mainline build)
+- **MariaDB 11.8** — current stable, latest tables compatible
+- **PHP 8.4 (FPM)** — current stable; bump to 8.5 once it's GA in `ondrej/php`
+- **Composer + Node.js 24 + Yarn** — for AtomCMS/OrionCMS
+- Foundation for AtomCMS, OrionCMS, or the built-in Nitro UI login (no CMS required)
 
-:euro: And ofcourse cheaper as we do not need a windows license!
+You'll also need these tools on your local machine:
 
-Always keep in mind to use a CDN (Cloudflare / Akamai / Fastly and many more), we advise you to start with Cloudflare and use the Free version to start. When your hotel is >50 users online then start thinking about Cloudflare Pro or a better fit to your needs. Some advise never to use the "Cloudflare Zero Trust" option to reach your VPS, as this will NOT protect you when using the Cloudflare Proxy option. This is however a nice feature, but this is for a Home NAS / Application like Home Assist etc. but never for a production system!
+- 📺 **SSH client** — [MobaXterm](https://mobaxterm.mobatek.net/download.html) (free, recommended)
+- 📺 **MySQL client** — [HeidiSQL](https://www.heidisql.com/) (free; don't use cracked Navicat — many cracked copies ship with malware)
+- 📺 **File transfer** — [WinSCP](https://winscp.net/eng/download.php)
 
-We will be installing the following on the system.
+## Install NGINX
 
-:point_right: NGINX (high-performance webserver)
+```bash
+apt install -y curl gnupg2 ca-certificates lsb-release dirmngr software-properties-common apt-transport-https
 
-:point_right: MariaDB 11.0 latest stable version, look in the FAQ of the Krews DC to update the tables to use MariaDB 11
+curl -fsSL https://nginx.org/keys/nginx_signing.key \
+  | gpg --dearmor \
+  | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 
-:point_right: Setup the infra for AtomCMS or the build in UI-GUI (no CMS required)
+gpg --dry-run --quiet --import --import-options import-show \
+  /usr/share/keyrings/nginx-archive-keyring.gpg
 
-:point_right: The following is a requirement on your local laptop/desktop:
+echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
+  | tee /etc/apt/sources.list.d/nginx.list
 
-:vhs: SSH client, for this I do recommend MobaXterm https://mobaxterm.mobatek.net/download.html this is a free version
+echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
+  | tee /etc/apt/preferences.d/99nginx
 
-:vhs: MySQL Workbench, for this I recommend using Heidi (make it yourself easy don't use a pirated copy of Navicat, this is just bad software and a lot of cracked versions come with spyware) https://www.heidisql.com/
-
-:vhs: WinSCP, a free tool to quickly transfer files from your machine to the server https://winscp.net/eng/download.php
-
-## NGINX
-```
-apt install curl gnupg2 ca-certificates lsb-release dirmngr software-properties-common apt-transport-https -y
-curl -fSsL https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-gpg --dry-run --quiet --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
-echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list
-echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" | tee /etc/apt/preferences.d/99nginx
 apt update -y
-apt install nginx-common -y
-apt install nginx -y
-chmod +x /etc/init.d/nginx
+apt install -y nginx
 ```
 
-When there are popup screens just press OK :white_square_button:
+If any pop-up screens appear, just press **OK**.
 
-## NGINX PHP-FPM 8.5
-```
+## Install PHP-FPM 8.4
+
+```bash
 sudo add-apt-repository ppa:ondrej/php -y
-sudo apt install php8.5-fpm php8.5 php8.5-common php8.5-mysql php8.5-xml php8.5-xmlrpc php8.5-curl php8.5-gd php8.5-imagick php8.5-cli php8.5-imap php8.5-mbstring php8.5-soap php8.5-zip php8.5-intl php8.5-bcmath unzip -y
+sudo apt install -y \
+  php8.4-fpm php8.4 php8.4-common php8.4-mysql \
+  php8.4-xml php8.4-xmlrpc php8.4-curl php8.4-gd \
+  php8.4-imagick php8.4-cli php8.4-imap php8.4-mbstring \
+  php8.4-soap php8.4-zip php8.4-intl php8.4-bcmath unzip
 ```
-When there are popup screens just press OK :white_square_button:
 
-## MariaDB
-```
-apt-get install apt-transport-https curl -y
+If any pop-up screens appear, just press **OK**.
+
+## Install MariaDB 11.8
+
+```bash
+apt-get install -y apt-transport-https curl
 mkdir -p /etc/apt/keyrings
-curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+curl -o /etc/apt/keyrings/mariadb-keyring.pgp \
+  'https://mariadb.org/mariadb_release_signing_key.pgp'
 ```
-When there are popup screens just press OK :white_square_button:
 
-create the following file: vi /etc/apt/sources.list.d/mariadb.sources (First press the letter i before paste you will the see in the left corner the text -- INSERT --)
+Create the MariaDB sources list:
+
+```bash
+vi /etc/apt/sources.list.d/mariadb.sources
 ```
-# MariaDB 11.8 repository list - created 2025-08-05 12:47 UTC
+
+Press `i` to enter insert mode (you'll see `-- INSERT --` in the bottom-left), then paste:
+
+```ini
+# MariaDB 11.8 repository list
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
-# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-# URIs: https://deb.mariadb.org/11.8/ubuntu
 URIs: https://ftp.nluug.nl/db/mariadb/repo/11.8/ubuntu
 Suites: noble
 Components: main main/debug
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
 ```
-When pasted press [ESC] then type :wq <-- make sure that there are no capitals
-```
+
+> **Note on the `Suites:` line:** MariaDB's repo currently publishes for `noble` (Ubuntu 24.04). At the time of writing, no `resolute` (Ubuntu 26.04) suite is published yet — the `noble` packages run on 26.04 without issue. Once MariaDB publishes a 26.04 suite, switch this line to match.
+
+Press `ESC`, then type `:wq` and press Enter. Then install:
+
+```bash
 apt-get update -y
-apt-get install mariadb-server -y
+apt-get install -y mariadb-server
 ```
-Composer and NodeJS
-```
+
+## Install Composer + Node.js + Yarn
+
+```bash
 sudo apt-get update && sudo apt-get install -y ca-certificates curl gnupg
-curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+  | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
 NODE_MAJOR=24
-echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
-sudo apt-get update && sudo apt-get install nodejs -y
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" \
+  | tee /etc/apt/sources.list.d/nodesource.list
+
+sudo apt-get update && sudo apt-get install -y nodejs
 
 curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
 sudo php /tmp/composer-setup.php --install-dir=/usr/bin --filename=composer
+
 npm install --global yarn
 ```
-When there are popup screens just press OK :white_square_button:
 
-Setup Database and secure your server
+## SSH security (key-based authentication)
 
-## SSH Security
-First, we want to secure the server by removing password authentication and using KEY authentication with your own password.
-We will also use the same key to get connected to the Database, this way only the SSH port needs to be open to the internet and port 3306 will not be needed.
-Therefore way more secure and also much better to maintain, by just adding a key the user will get access.
+First, we'll secure the server by disabling password login and switching to SSH key authentication. The same key can be used to tunnel into the database, so port 3306 never has to be exposed — only SSH needs to be reachable from the internet. This is far more secure and easier to maintain.
 
-### Step 1 :
-Open MobaXterm
+### Step 1 — Generate the key pair
 
-In the window select Tools (this is on top in the menu section)
+In MobaXterm, open the **Tools** menu (top of the window) → **MobaKeyGen (SSH Key generator)**.
 
-Select "MobaKeyGen (SSH Key generator)"
+Click **Generate** and move your mouse until the bar fills.
 
-Select Generate <-- Move your mouse until the generate is complete
+Copy the entire **public key text** from the top box and save it to a file on your PC, e.g. `C:\Key\Public.key`. Do **not** click "Save public key" — it saves a slightly different format that won't work. Just copy-paste the text.
 
-Copy the content of the key to a file on your PC/Laptop example (don't press the Save public key this will not work!) create a file C:\Key\Public.key and then paste the content.
+The text looks like this *(this is an example — never use someone else's key!)*:
 
-(like this below,. SO DO NOT USE THIS !!!)
+```text
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJXTjI5gozMN8XmFwIdC76h8zv/tDc5l5kLNdaplEgpRtcrVj+...== rsa-key-20230711
 ```
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJXTjI5gozMN8XmFwIdC76h8zv/tDc5l5kLNdaplEgpRtcrVj+zJZ1/IT/L1gUWGZbrat/UoCD0eIdXi5o7GwXrBszkIoQA26GN5MNmvZU/JQSWDwfaXzCI1rYnZxXCXf+eRThBfdW8rHzXEiG9bvsq9ppz7T75pB5Pv6Qem/lzuiUm3wbvh4wpCkMkBDLepyAXOBGu4T+sARCPkoW4In4fP1pMzzkRqMhXCLnFPhqY692kSsChXbeIeuVls5iBnf55jM5ZJKIOFebdxZNoSkb4/nq7VepzrByWeoYcjfZM8/ZjZ0EBd8DmFgpTD0AQBqwc3oZUo+sikyFoFUDkJNp rsa-key-20230711
+
+Enter the same password in both **"Key passphrase"** and **"Confirm passphrase"**. **This is critical** — losing this passphrase means losing access.
+
+Click **Save private key** and store it next to the public key as `C:\Key\Privatekey.ppk`.
+
+### Step 2 — Install the public key on the server
+
+Log into your VPS as root and run:
+
+```bash
+mkdir -p /root/.ssh
+chmod 700 /root/.ssh
+vi /root/.ssh/authorized_keys
 ```
-Enter a password in "Key passphrase" and the same password in "Confirm passphrase" <-- VERY IMPORTANT
 
-Press the "Save private key" button and save this in the same location as the public.key c:\Key\Privatekey.pkk
+Press `i`, paste the **public key** text, press `ESC`, then `:wq`.
 
-Login to Your VPS/Server and we are going to set the SSH key, I will set it as root user this can of course can also be done for normal user accounts
+Lock the file down and restart SSH:
 
-### Step 2 :
-```vi /root/.ssh/authorized_keys```
-Paste the content of the Public.key into the editor (First press the letter i before pasting you will see in the left corner the text -- INSERT --)
-
-When pasted press [ESC] then type :wq <-- make sure that there are no capitals
-
-run the following command: ```service ssh restart```
-
-### Step 3 :
-Now we will test the use of the SSHkey before we make the SSH secure as we do not want to lose access to the server :)
-Open the MobaXterm and duplicate your current server so you get a copy of the server.
-Now edit the settings by right click the newly copied and selecting "Edit settings" In the Session settings screen now select "Advanced SSH settings" and enable "Use Private key" After this, you can select the file "C:\Key\Privatekey.pkk" in the "Use private key" field When you have selected it press OK :white_square_button:
-
-Now use the newly copied object that will connect to your server using the SSHKey, you will be prompted for username "root" and password "
-This is the password that you have set in the generate of the key so not the server password" When this is connected then all went well if not you did something wrong and need fixing before continuing.
-
-### Step 4 :
-Connect now with your newly created SSH session and use the Key (remove the old one!)
-
+```bash
+chmod 600 /root/.ssh/authorized_keys
+service ssh restart
 ```
->/etc/ssh/sshd_config
-vi /etc/ssh/sshd_config 
+
+### Step 3 — Test the key BEFORE locking down passwords
+
+> **Do not skip this step.** If you disable password login before confirming the key works, you can lock yourself out.
+
+In MobaXterm, right-click your current session → **Duplicate session** → **Edit settings** → **Advanced SSH settings** → enable **Use private key** and select `C:\Key\Privatekey.ppk`. Click OK.
+
+Connect with the duplicated session. Username is `root`. When prompted for a password, enter the **passphrase you set on the key** — not the server's root password. If it connects, you're good.
+
+### Step 4 — Disable password authentication
+
+In your new key-based session:
+
+```bash
+> /etc/ssh/sshd_config       # truncates the file to empty
+vi /etc/ssh/sshd_config
 ```
-paste the following into the sshd_config (First press the letter i before pasting you will see in the left corner the text -- INSERT --)
-```
+
+Press `i` and paste:
+
+```ini
 Include /etc/ssh/sshd_config.d/*.conf
 Port 22
-PermitRootLogin yes
+PermitRootLogin prohibit-password
 PasswordAuthentication no
 PubkeyAuthentication yes
 KbdInteractiveAuthentication no
@@ -161,51 +196,91 @@ PrintMotd no
 AcceptEnv LANG LC_*
 Subsystem       sftp    /usr/lib/openssh/sftp-server
 ```
-When pasted press [ESC] then type :wq <-- make sure that there are no capitals
 
-now reboot the server by the command: reboot And always make a backup of both keys in a secure place, because if you lose the keys there is no way to get access remote to the server !!! Your only option then is by using a VNC / Terminal / KVM etc.
+Press `ESC`, then `:wq`.
+
+> **About `PermitRootLogin prohibit-password`:** allows root to log in by SSH key but blocks any password-based login. Stronger than `yes`, less restrictive than `no` (which would block root entirely and force a non-root user with `sudo`). If you want maximum security, set up a non-root user with `sudo` and use `PermitRootLogin no`.
+
+Reboot:
+
+```bash
+reboot
+```
+
+> **Back up your keys!** Save both `Public.key` and `Privatekey.ppk` somewhere safe (encrypted USB, password manager, etc.). If you lose them, your only way back into the server is through your provider's VNC/KVM console.
 
 ## Database setup
-First, we need to finalize the setup of MariaDB.
-```
+
+Finalize the MariaDB install:
+
+```bash
 mariadb-secure-installation
-Enter current password for root (enter for none):   <---- Press ENTER
-Switch to unix_socket authentication [Y/n] n  <---- Press n
-Change the root password? [Y/n] n  <---- Press n
-Remove anonymous users? [Y/n] Y  <---- Press Y
-Disallow root login remotely? [Y/n] n  <---- Press n
-Remove test database and access to it? [Y/n] Y  <---- Press Y
-Reload privilege tables now? [Y/n] Y  <---- Press Y
 ```
-now we need to allow connections to the Database:
 
-```vi /etc/mysql/mariadb.conf.d/50-server.cnf```
-Edit the following setting (First press the letter i before editing you will see in the left corner the text -- INSERT --):
+Answer the prompts as follows:
 
+```text
+Enter current password for root (enter for none):   <-- Press ENTER
+Switch to unix_socket authentication [Y/n]            <-- Press n
+Change the root password? [Y/n]                       <-- Press n
+Remove anonymous users? [Y/n]                         <-- Press Y
+Disallow root login remotely? [Y/n]                   <-- Press n
+Remove test database and access to it? [Y/n]          <-- Press Y
+Reload privilege tables now? [Y/n]                    <-- Press Y
+```
+
+> **Security note on `bind-address`:** the snippet below leaves MariaDB listening on `127.0.0.1` (localhost only). This is the safest default — the database is **not** exposed to the internet. You connect to it through an SSH tunnel from your local machine (see HeidiSQL config below). **Only change `bind-address` to `0.0.0.0` if you have a hard firewall rule blocking port 3306 from the outside world**, otherwise you're inviting brute-force attacks.
+
+```bash
+vi /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+
+Confirm this line is set (it's the default):
+
+```ini
 bind-address            = 127.0.0.1
-Change this to:
+```
 
-bind-address            = 0.0.0.0
+Now create the database and users. Replace the placeholder passwords with strong values:
 
-Now we are able to connect from anywhere, but keep in mind only with SSH so it is not a direct connection over port 3306
-
-We now need to add a root user and CMS user to the database, and for the CMS user, we will use the database name habbo (you can change this whatever you want of course!). Also, change the password to whatever you like.
-
-Run the following command:
-
+```bash
 mariadb
-Now paste the following SQL (after changing the passwords!)
-
 ```
-CREATE USER 'root'@'%' IDENTIFIED BY 'CHANGE THIS TO YOUR DB ROOT PASSWORD';
-CREATE USER 'cms'@'%' IDENTIFIED BY 'CHANGE THIS TO YOUR DB CMS PASSWORD';
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
-CREATE SCHEMA `habbo` ; # This is the database
-GRANT EXECUTE, SELECT, SHOW VIEW, ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, INDEX, INSERT, REFERENCES, TRIGGER, UPDATE, LOCK TABLES  ON `habbo`.* TO 'cms'@'%' WITH GRANT OPTION;
+
+```sql
+-- Root user, localhost only
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'CHANGE_THIS_TO_A_STRONG_ROOT_PASSWORD';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+
+-- CMS application user, localhost only
+CREATE USER 'cms'@'localhost' IDENTIFIED BY 'CHANGE_THIS_TO_A_STRONG_CMS_PASSWORD';
+
+-- Hotel database
+CREATE SCHEMA `habbo`;
+GRANT EXECUTE, SELECT, SHOW VIEW, ALTER, ALTER ROUTINE,
+      CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW,
+      DELETE, DROP, EVENT, INDEX, INSERT, REFERENCES, TRIGGER,
+      UPDATE, LOCK TABLES
+ON `habbo`.* TO 'cms'@'localhost';
+
 FLUSH PRIVILEGES;
+EXIT;
 ```
-To make sure all is ready to go run: reboot
 
-You are now able to connect to the Database using your SSH-Key with the use of HeidiSQL, how to set this up using the following link: https://www.enovision.net/mysql-ssh-tunnel-heidisql here it is in detail explained how to connect
+> **Tip:** if you need to connect from your local machine (for HeidiSQL), use an **SSH tunnel** — don't expose port 3306. The tunnel runs over your existing SSH key, so no extra port has to be opened.
 
-You can now import the Database from ARC or any other one you like expl: https://git.krews.org/morningstar/ms4-base-database/-/releases <== ms4db-all-init.sql
+Reboot to make sure everything is clean:
+
+```bash
+reboot
+```
+
+You can now connect to the database via HeidiSQL using your SSH key. A detailed walkthrough is here: <https://www.enovision.net/mysql-ssh-tunnel-heidisql>
+
+## Next steps — import the base database
+
+Once connected, import the base Arcturus / Morningstar Extended database. The recommended source is the **Arcturus-Morningstar-Extended** repository, which ships an `ms4db-all-init.sql` (or equivalent) base file:
+
+> **TODO:** add a direct link to the base SQL file once the repo location is finalised.
+
+After the import is in place, continue with the [NitroV3 & Emulator Setup](NitroV3_And_Emulator.md).
