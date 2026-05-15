@@ -1,41 +1,83 @@
-# Install Ubuntu 26.04 Server with AtomCMS / Arcturus / Nitro Client and Imager
-Download link : https://ubuntu.com/download/server for Ubuntu 26.04 **noble**
+<div align="center">
 
-### In this tutorial we will be using an Ubuntu server 26.04 with NGINX.  
-- We will setup the emulator as a service, therefore no action is required after an reboot.
+<img src="https://i.imgur.com/Lzgqaei.png" alt="Project Logo" width="420"/>
 
-So, in the end, this will:
+# Complete Retro on Ubuntu
 
-* Lower on hardware usage, also saving server costs.
-* Lower on server costs, due to the fact no Windows license is required.
-* Greater website perfomance in comparison to IIS, Apache and others.
+**Full self-hosted retro hotel stack — built on Ubuntu 26.04 LTS Server with NGINX, AtomCMS, Arcturus Emulator and Nitro V3.**
 
-When starting from scratch, this would be the recomended order :
-1. VPS Setup
-2. Atom Setup or UI-Gui setup (No CMS required)
-3. Imager and Gamedata setup  
-4. Cloudflare and SSL setup  
-5. NitroV3 & Emulator setup
+[![Ubuntu](https://img.shields.io/badge/Ubuntu-26.04_LTS-E95420?logo=ubuntu&logoColor=white)](https://ubuntu.com/download/server)
+[![NGINX](https://img.shields.io/badge/NGINX-mainline-009639?logo=nginx&logoColor=white)](https://nginx.org/)
+[![MariaDB](https://img.shields.io/badge/MariaDB-12.x-003545?logo=mariadb&logoColor=white)](https://mariadb.org/)
+[![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)](https://www.php.net/)
+[![Discord](https://img.shields.io/badge/Discord-Atom_Community-5865F2?logo=discord&logoColor=white)](https://discord.gg/HEqEwK2B)
 
-#### The only action you need to do is get a full pack of the c_images
+</div>
 
-**Big Thanks to:**  
-Dennis⚡(Object) (Atom CMS)
+---
 
-iNicollas (OrionCMS)
+## About this guide
 
-TheGeneral (Initial base DB)  
+A step-by-step walkthrough for setting up a complete retro hotel on **Ubuntu 26.04 LTS Server** (codename *Resolute Raccoon*). The emulator runs as a `systemd` service, so no manual intervention is required after a reboot — the hotel comes back online automatically.
 
-TenShie (Crackables, Soundtracks, Crafting, TargedOffers, Roombundles, Calendar)  
+> Download Ubuntu Server here: <https://ubuntu.com/download/server>
 
-Skeletor for the group bagde imager  
+## Why Ubuntu + NGINX?
 
-:white_check_mark: Setup VPS / Atom or OrionCMS/ Arcturus Database : 100%  
-:white_check_mark: Imager : 100%  
-:white_check_mark: Cloudflare and SSL : 100%  
-:white_check_mark: Emulator : 100%  
-:white_check_mark: Nitro setup : 100%
+|  | Benefit |
+|---|---|
+| 💸 | **Lower hosting costs** — no Windows license required |
+| ⚡ | **Better web performance** than IIS, Apache, and other traditional stacks |
+| 🪶 | **Lighter hardware footprint** — runs comfortably on small VPS plans |
+| 🔁 | **Auto-recovers on reboot** — emulator is managed as a `systemd` service |
+| 🔒 | **5 years of security support** with Ubuntu LTS |
+
+## Setup path
+
+Follow the steps in order. Each one links to its own detailed guide.
+
+1. **[VPS Setup](#)** — base OS, users, firewall, MariaDB, PHP-FPM
+2. **[NitroV3 & Emulator Setup](NitroV3_And_Emulator.md)** — Arcturus Morningstar Extended, Nitro V3, Nitro Renderer
+3. **[CMS Front-end](#)** — choose one:
+   - **[Atom CMS Setup](NGINX_Atom_setup.md)** — full-featured CMS front-end *(recommended)*
+   - **[UI Login Setup](NGINX_UI-Setup.md)** — minimal, no CMS required
+4. **[Imager & Gamedata Setup](#)** — avatar imager, badge imager, c_images
+5. **[Cloudflare & SSL Setup](#)** — Origin certificates, real-IP, WSS proxying
+
+> **Note:** you'll need to provide your own copy of the `c_images` pack — it isn't bundled with this repo.
+
+## Status
+
+| Component | Status |
+|---|:---:|
+| VPS / Atom or OrionCMS / Arcturus database | ✅ |
+| Imager | ✅ |
+| Cloudflare & SSL | ✅ |
+| Emulator | ✅ |
+| Nitro setup | ✅ |
+
+## Credits
+
+A big thanks to everyone who made this possible:
+
+| Contributor | Contribution |
+|---|---|
+| **Dennis ⚡ (Object)** | Atom CMS |
+| **iNicollas** | OrionCMS |
+| **TheGeneral** | Initial base database |
+| **TenShie** | Crackables, soundtracks, crafting, target offers, room bundles, calendar |
+| **Skeletor** | Group badge imager |
+
+## Community & support
+
+For questions, updates, and ongoing development, join the Atom community on Discord:
+
+<https://discord.gg/HEqEwK2B>
+
+---
 
 <div align="center">
-<img src="https://i.imgur.com/Lzgqaei.png" alt="Logo"/>
+
+*Made with ❤️ for the retro community.*
+
 </div>
