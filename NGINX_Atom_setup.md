@@ -1,202 +1,306 @@
 # AtomCMS Setup
-### Linux NGINX latest mainline version
 
-```
+## Linux — NGINX (latest mainline version)
+
+Before you start, make sure you have completed this step first:
+<https://github.com/duckietm/Complete-Retro-on-Ubuntu/blob/main/NGINX_UI-Setup.md>
+
+NitroV3 and NGINX must already be working 100% before you continue.
+
+This guide will modify the existing NGINX/UI setup so you can use AtomCMS as your front-end instead of Nitro's built-in UI login. For most users with limited Linux experience, I recommend using WinSCP to edit files — it's much easier than working in a terminal.
+
+## Install AtomCMS
+
+```bash
 cd /var/www/
 rm -r html
 git clone https://github.com/ObjectRetros/atomcms.git
-# If you want to use the Develop branch use then : git clone --single-branch --branch develop https://github.com/ObjectRetros/atomcms.git
+# To use the develop branch instead, run:
+# git clone --single-branch --branch develop https://github.com/ObjectRetros/atomcms.git
 cd atomcms
 cp .env.example .env
 ```
 
-### Now edit all the settings like URL / Database settings etc. in the .env: vi /var/www/atomcms/.env
+## Configure the .env
 
-Make it look like so:
+Edit the settings — URL, database, etc.:
+
+```bash
+vi /var/www/atomcms/.env
 ```
-APP_NAME="Habbo Hotel"
+
+Make it look like this (replace each placeholder with your real value):
+
+```ini
+APP_NAME="example"            # Your hotel name
 APP_ENV=production
+APP_KEY=                      # Leave empty — `php artisan key:generate` will fill it in
 APP_DEBUG=false
-APP_URL="https://habbo.com"
-DB_DATABASE="atom"
-DB_USERNAME="root"
-DB_PASSWORD="password"
-TINYMCE_API_KEY="TINYMCEKEYHERE"
-TURNSTILE_ENABLED=true
-TURNSTILE_SITE_KEY="TURNSTILEKEY"
-TURNSTILE_SECRET_KEY="TURNSTILESECRET"
-FINDRETROS_NAME="habbohotel"
-FINDRETROS_ENABLED=true # true or false
-NITRO_IMAGER_URL (e.g. https://www.habbo.com/habbo-imaging/avatarimage)
-NITRO_STATIC_URL (e.g. https://static.domain.com)
-NITRO_CLIENT_URL (e.g. http://nitro.habhub.net)
-NITRO_STATIC_PATH (e.g. /var/www/static.domain.com)
+APP_URL=https://example.com   # Your URL, no trailing slash
+
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1             # Use 127.0.0.1 for a local MariaDB/MySQL install
+DB_PORT=3306
+DB_DATABASE=habbo             # Database name
+DB_USERNAME=cms               # Database user — do NOT use root
+DB_PASSWORD=MyPassword        # Database password
+
+# ... other defaults from .env.example ...
+
+# Turnstile
+TURNSTILE_SITE_KEY=0x4AAAAAxxxxxxx     # Turnstile site key
+TURNSTILE_SECRET_KEY=0x4AAAAAAxxxxxxx  # Turnstile secret key
+
+# Enable this if your site runs over HTTPS but you see requests going to "http"
+FORCE_HTTPS=true
 ```
 
-### Next install the CMS:
-```
+## Install the CMS
+
+```bash
 cd /var/www/atomcms
-composer install # Press enter by [yes]
+composer install     # When prompted, press Enter to accept the default [yes]
+```
+
+If composer prompts you with `Username:`, that means it's trying to authenticate against the private FilamentPHP package repository. If you don't use any paid Filament plugins, you can skip the auth by editing `composer.json` and removing **both** of the following.
+
+Remove this dependency line:
+
+```json
+"filament/blueprint": "^2.1",
+```
+
+And remove this repository block:
+
+```json
+{
+    "name": "filament",
+    "type": "composer",
+    "url": "https://packages.filamentphp.com/composer"
+}
+```
+
+Then retry `composer install`. Continue with:
+
+```bash
 php artisan key:generate
 php artisan storage:link
 chown -R www-data:www-data /var/www/atomcms/
 chmod -R 775 storage
 chmod -R 775 bootstrap/cache
 php artisan migrate
+```
+
+If you get the following error:
+
+```
+Base table or view already exists: 1050 Table 'password_resets' already exists
+```
+
+…it means an older table is left over from a previous install. On a **fresh install only** (no real user data yet), drop the conflicting table and retry:
+
+```bash
+mariadb
+USE habbo;                    # Replace with your database name
+DROP TABLE password_resets;
+EXIT;
+```
+
+> **Warning:** never run `DROP TABLE` on a database that has live user data unless you know what you're doing.
+
+Then continue:
+
+```bash
 php artisan migrate --seed
 yarn install
 yarn build:atom
 ```
 
-### NGINX Setup
-```
-cd /etc/nginx
->nginx.conf
-rm sites-available/default
-rm sites-enabled/default
-vi /etc/nginx/nginx.conf
+You've now successfully installed AtomCMS and built it.
+
+## NGINX changes
+
+Now modify the existing NGINX site config to point at AtomCMS and serve Nitro V3 from `/client`:
+
+```bash
+cd /etc/nginx/sites-available
+vi cms.conf
 ```
 
-### Paste the following in the nginx.conf
-(First press the letter i before pasting you will see in the left corner the text -- INSERT --)
-```
-user www-data;
-worker_processes auto;
-worker_rlimit_nofile 20000;
-pid /run/nginx.pid;
-include /etc/nginx/modules-enabled/*.conf;
-events {
-        worker_connections 1024;
-        multi_accept off;
+You need to:
+
+1. Change the `root` to AtomCMS's `public` directory.
+2. Add a `/client/` location that aliases the Nitro V3 `dist` folder.
+
+The relevant snippet should look like this:
+
+```nginx
+root  /var/www/atomcms/public;
+
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
 }
-http {
-        ##
-        # Basic Settings
-        ##
-        sendfile on;
-        tcp_nopush on;
-        tcp_nodelay on;
-        keepalive_timeout 65;
-        types_hash_max_size 2048;
-        client_max_body_size 100M;
-        # server_tokens off;
-        # server_names_hash_bucket_size 64;
-        # server_name_in_redirect off;
-        include /etc/nginx/mime.types;
-        default_type application/octet-stream;
-        # Rate limiting
-        limit_conn_zone $binary_remote_addr zone=addr:10m;
-        limit_req_zone $binary_remote_addr zone=req_limit_per_ip:10m rate=25r/s;
-        # SSL Settings
-        log_format custom '$remote_user [$time_local] - $remote_addr :'
-        '"$request" $status $body_bytes_sent - '
-        'Refer:"$http_referer" Country:"$http_cf_ipcountry"';
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
-        # Dropping SSLv3, ref: POODLE
-        ssl_prefer_server_ciphers on;
-        # Logging Settings
-        access_log /var/log/nginx/access.log;
-        error_log /var/log/nginx/error.log;
-        # Gzip Settings
-        #gzip on;
-        # Virtual Host Configs
-        include /etc/nginx/cloudflare;
-        include /etc/nginx/conf.d/*.conf;
-        include /etc/nginx/sites-enabled/*;
-}
-```
-When pasted press [ESC] then type :wq #make sure that there are no capitals
 
-Now run : ```vi /etc/nginx/sites-available/cms.conf``` Paste the following in the cms.conf file, And change the ###URL### to your domain
-
-```
-server {
-        listen 80;
-        listen [::]:80;
-        
-        index index.php index.html index.htm;
-        autoindex off;
-        server_tokens off;
-        add_header X-Frame-Options SAMEORIGIN;
-        add_header AtomCMS "This is an SpongeBob server";
-        add_header X-Content-Type-Options "nosniff" always;
-        add_header Referrer-Policy "strict-origin-when-cross-origin";
-        add_header X-XSS-Protection "1; mode=block";
-        add_header Permissions-Policy "autoplay=(self), encrypted-media=(), fullscreen=(), geolocation=(), microphone=(), midi=()";
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-        
-        access_log /var/log/nginx/cms.log custom;
-        error_log /var/log/nginx/cms_error.log;
-
-        server_name ###URL###;
-        
-        root /var/www/atomcms/public;
-        index index.php index.html index.htm;
-        location / {
-        try_files $uri $uri/ /index.php?$query_string;
-        limit_conn addr 10;
-        autoindex off;
-        }
-        location ~ \.php$ {
-                include snippets/fastcgi-php.conf;
-                fastcgi_param PHP_VALUE open_basedir="/var/www/atomcms/:/tmp/";
-                fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
-        }
+location /client/ {
+    alias /var/www/Nitro-V3/dist/;
 }
 ```
 
-## Cloudflare
-We will make a script for Cloudflare to access with RealIP in the logs
-```
-mkdir /var/scripts
-vi /var/scripts/CF_Refresh.cf
+In context, your `cms.conf` should now have:
+
+```nginx
+# ...
+root  /var/www/atomcms/public;
+index index.php index.html index.htm;
+
+autoindex     off;
+server_tokens off;
+
+add_header Alt-Svc                   'h3=":443"; ma=86400';
+add_header X-Content-Type-Options    "nosniff" always;
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+add_header Referrer-Policy           "strict-origin";
+add_header X-XSS-Protection          "1; mode=block";
+add_header Camwijs                   "This is an AtomCMS server in NL";
+add_header Permissions-Policy        "accelerometer=(), autoplay=(self), camera=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), sync-xhr=(), usb=()";
+
+client_header_buffer_size   1k;
+large_client_header_buffers 4 8k;
+
+access_log /var/log/nginx/cms/access.log custom buffer=32k;
+error_log  /var/log/nginx/cms/error.log;
+
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+
+location /client/ {
+    alias /var/www/Nitro-V3/dist/;
+}
+
+location = /.vite/manifest.json {
+    try_files $uri =404;
+    default_type application/json;
+    add_header Cache-Control "no-store" always;
+}
+# ...
 ```
 
-Paste the following config:
-```
-#!/bin/bash
+Restart NGINX:
 
-CLOUDFLARE_FILE_PATH=/etc/nginx/cloudflare
-echo "#Cloudflare" > $CLOUDFLARE_FILE_PATH;
-echo "" >> $CLOUDFLARE_FILE_PATH;
-echo "# - IPv4" >> $CLOUDFLARE_FILE_PATH;
-for i in `curl https://www.cloudflare.com/ips-v4`; do
-    echo "set_real_ip_from $i;" >> $CLOUDFLARE_FILE_PATH;
-done
-echo "" >> $CLOUDFLARE_FILE_PATH;
-echo "# - IPv6" >> $CLOUDFLARE_FILE_PATH;
-for i in `curl https://www.cloudflare.com/ips-v6`; do
-    echo "set_real_ip_from $i;" >> $CLOUDFLARE_FILE_PATH;
-done
-echo "" >> $CLOUDFLARE_FILE_PATH;
-echo "real_ip_header CF-Connecting-IP;" >> $CLOUDFLARE_FILE_PATH;
-echo "add_header CF-IPCountry $http_cf_connecting_ip always;" >> $CLOUDFLARE_FILE_PATH;
-#test configuration and reload nginx
-nginx -t && systemctl reload nginx
+```bash
+systemctl restart nginx
 ```
 
-Now make it executable and run the script
+If something is wrong, run `nginx -t` — it will tell you exactly which line in which config file is the problem.
+
+## Run the AtomCMS installer
+
+You can now visit your domain in a browser and follow the AtomCMS install wizard. The installer license key is stored in the database:
+
+```sql
+SELECT * FROM website_installation;
 ```
-chmod +x /var/scripts/CF_Refresh.cf
-/var/scripts/CF_Refresh.sh
+
+When the installer asks for paths, use the following:
+
+```text
+Nitro external texts file:
+/var/www/Nitro-V3/dist/configuration/ExternalTexts.json
+
+Badges path:
+/gamedata/c_images/album1584
+
+Group badge path:
+/gamedata/Badgeparts/generated
+
+Furniture icons path:
+/
+
+# This one is important:
+Nitro path:
+/client
 ```
 
-Now lets bind the config to nginx:
-```ln -s /etc/nginx/sites-available/cms.conf /etc/nginx/sites-enabled/```
+## Configure Nitro V3 for the /client subpath
 
-restart nginx and test your site : ```/etc/init.d/nginx restart```
-If there is something wrong just run : ```nginx -t``` and it will show you what is going on.
+A few changes are required in Nitro V3 to make it work as a sub-app under `/client`.
 
-Now Run through the installer of AtomCMS <== The license key can be found in the Database ```SELECT * FROM website_installation;```
+### 1. Update package.json
+
+```bash
+cd /var/www/Nitro-V3/
+vi package.json
+```
+
+Find these two lines:
+
+```json
+"start": "vite --host",
+"build": "vite build && node scripts/minify-dist.mjs",
+```
+
+Change them to:
+
+```json
+"start": "vite --base=/client/ --host",
+"build": "vite --base=/client/ build && node scripts/minify-dist.mjs",
+```
+
+### 2. Update client-mode.json
+
+> **Important:** edit files in `/var/www/Nitro-V3/public/configuration`, **never** in `/dist`. The `dist` folder is regenerated every time you build and any changes there will be wiped out.
+
+```bash
+cd /var/www/Nitro-V3/public/configuration
+vi client-mode.json
+```
+
+Set it to:
+
+```json
+{
+    "distObfuscationEnabled": false,
+    "secureAssetsEnabled": false,
+    "secureApiEnabled": false,
+    "apiBaseUrl": "https://###MY_DOMAIN###:2096",
+    "plainConfigBaseUrl": "https://###MY_DOMAIN###/client/configuration/",
+    "plainGamedataBaseUrl": "https://###MY_DOMAIN###/gamedata/"
+}
+```
+
+Note: only `plainConfigBaseUrl` needs the `/client/` prefix. `plainGamedataBaseUrl` does not, because gamedata is served from the root `/gamedata/` path.
+
+### 3. Disable the built-in Nitro login screen
+
+Since AtomCMS now handles login, disable Nitro's built-in login:
+
+```bash
+vi /var/www/Nitro-V3/public/configuration/renderer-config.json
+```
+
+Set:
+
+```json
+"login.screen.enabled": false,
+```
+
+### 4. Rebuild Nitro V3
+
+```bash
+cd /var/www/Nitro-V3/
+yarn build
+```
 
 ## Updates
 
-- How to import changes from github : ```git pull```
+- Pull the latest changes from GitHub: `git pull`
+- Update PHP dependencies: `composer update`
+- Rebuild the theme after frontend changes: `yarn install && yarn build:atom`
+- Run new database migrations: `php artisan migrate`
 
-- Update the packages : ```composer update```
-
-- Rebuild the theme (when changes are made to the frontend) : ```yarn build:atom```
-
-- Run the migrations : ```php artisan migrate```
-
-Please use discord to see all the latest developments of Atom at : https://discord.gg/HEqEwK2B
+For the latest Atom developments, join the Discord: <https://discord.gg/HEqEwK2B>
