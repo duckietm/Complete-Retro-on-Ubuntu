@@ -111,7 +111,7 @@ front-end issues, and Atom updates.
 </td>
 <td align="center" width="50%">
 
-<img src="https://img.shields.io/badge/Emulator-Nitro%20V3%20%2B%20Arcturus-E95420?style=for-the-badge&logo=java&logoColor=white" alt="NitroV3 Community"/>
+<img src="https://img.shields.io/badge/Emulator-Nitro%20V3%20%2B%20Arcturus%20Extended-E95420?style=for-the-badge&logo=java&logoColor=white" alt="NitroV3 Community"/>
 
 <br/><br/>
 
