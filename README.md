@@ -9,7 +9,7 @@
 </h1>
 
 <p>
-  <strong>A full self-hosted retro hotel stack — Ubuntu 26.04 LTS · NGINX · AtomCMS · Arcturus · Nitro V3.</strong>
+  <strong>A full self-hosted retro hotel — Ubuntu 26.04 LTS · NGINX · AtomCMS · Arcturus Extended · Nitro V3.</strong>
 </p>
 
 <p>
