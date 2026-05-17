@@ -50,6 +50,7 @@ echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 
 apt update -y
 apt install -y nginx
 apt install -y nginx-common
+chmod +x /etc/init.d/nginx
 ```
 
 If any pop-up screens appear, just press **OK**.
