@@ -33,20 +33,25 @@ You'll also need these tools on your local machine:
 
 ```bash
 apt install -y curl gnupg2 ca-certificates lsb-release dirmngr software-properties-common apt-transport-https
-
+```
+```bash
 curl -fsSL https://nginx.org/keys/nginx_signing.key \
   | gpg --dearmor \
   | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-
+```
+```bash
 gpg --dry-run --quiet --import --import-options import-show \
   /usr/share/keyrings/nginx-archive-keyring.gpg
-
+```
+```bash
 echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
   | tee /etc/apt/sources.list.d/nginx.list
-
+```
+```bash
 echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
   | tee /etc/apt/preferences.d/99nginx
-
+```
+```bash
 apt update -y
 apt install -y nginx
 apt install -y nginx-common
