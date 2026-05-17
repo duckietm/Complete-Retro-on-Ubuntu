@@ -74,8 +74,8 @@ git clone https://github.com/duckietm/Nitro-V3.git
 First, install the JDK and Maven required to build the emulator:
 
 ```shell
-apt install openjdk-25-jdk
-apt install maven
+apt install -y openjdk-25-jdk
+apt install -y maven
 ```
 
 Next, build the JAR file:
