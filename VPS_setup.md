@@ -58,7 +58,7 @@ apt install -y nginx-common
 chmod +x /etc/init.d/nginx
 ```
 
-If any pop-up screens appear, just press **OK**.
+If any pop-up screens appear, just press **OK**, also do them section by section!
 
 ## Install PHP-FPM 8.4
 
