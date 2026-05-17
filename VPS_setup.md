@@ -49,6 +49,7 @@ echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 
 
 apt update -y
 apt install -y nginx
+apt install -y nginx-common
 ```
 
 If any pop-up screens appear, just press **OK**.
