@@ -334,11 +334,11 @@ When everything is configured correctly, opening your domain in a browser should
 After pulling new changes to Nitro V3 or the renderer:
 
 ```bash
-cd /var/www/Nitro_Render
+cd /var/www/Nitro_Render_V3/
 git pull
 yarn install && yarn link
 
-cd /var/www/Nitro-V3
+cd /var/www/Nitro-V3/
 git pull
 yarn install && yarn link "@nitrots/nitro-renderer"
 yarn build
