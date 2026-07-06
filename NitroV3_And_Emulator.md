@@ -123,12 +123,6 @@ db.params=?characterEncoding=utf8&useSSL=false&serverTimezone=Europe/Amsterdam  
 db.pool.minsize=25
 db.pool.maxsize=100
 
-# Optional packet signing for encrypted WebSocket traffic.
-crypto.ws.signing.enabled=false
-# Optional persistent signing keys. Leave empty to auto-generate and persist them in emulator_settings.
-crypto.ws.signing.public_key=
-crypto.ws.signing.private_key=
-
 # Game configuration
 # Host IP. Use 0.0.0.0 in most cases. Use 127.0.0.1 if you only want to play on LAN.
 game.host=0.0.0.0
@@ -139,16 +133,6 @@ game.port=3000
 rcon.host=127.0.0.1
 rcon.port=3001
 rcon.allowed=127.0.0.1;127.0.0.2
-
-# WebSocket configuration (for Nitro)
-# Set ws.enabled to true to enable WebSocket connections.
-ws.enabled=true
-ws.host=0.0.0.0
-ws.port=2096
-# Comma-separated whitelist of allowed origins. Supports wildcards: *.example.com, * (allow all)
-ws.whitelist=localhost,127.0.0.1,*.localhost   # This is also used for CORS on the API, so set it to your domain in production!
-# Header name for the real client IP when behind a proxy (e.g. X-Forwarded-For, CF-Connecting-IP). Leave empty if not behind a proxy.
-ws.ip.header=X-Forwarded-For
 
 # Database connection pool
 db.pool.connection_timeout_ms = 10000
