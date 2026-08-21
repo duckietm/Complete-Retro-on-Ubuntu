@@ -9,7 +9,7 @@
 </h1>
 
 <p>
-  <strong>A full self-hosted retro hotel — Ubuntu 26.04 LTS · NGINX · AtomCMS · Arcturus Extended · Nitro V3.</strong>
+  <strong>A full self-hosted retro hotel — Ubuntu 26.04 LTS · NGINX · AtomCMS · Polaris · Nitro V3.</strong>
 </p>
 
 <p>
@@ -52,7 +52,7 @@ A step-by-step walkthrough for setting up a complete retro hotel on **Ubuntu 26.
 Follow the steps in order. Each one links to its own detailed guide.
 
 1. **[VPS Setup](#)** — base OS, users, firewall, MariaDB, PHP-FPM
-2. **[NitroV3 & Emulator Setup](NitroV3_And_Emulator.md)** — Arcturus Morningstar Extended, Nitro V3, Nitro Renderer
+2. **[NitroV3 & Emulator Setup](NitroV3_And_Emulator.md)** — Polaris Emulator, Nitro V3, Nitro Renderer
 3. **CMS Front-end** — choose one:
    - **[Atom CMS Setup](NGINX_Atom_setup.md)** — full-featured CMS front-end *(recommended)*
    - **[UI Login Setup](NGINX_UI-Setup.md)** — minimal, no CMS required
@@ -65,7 +65,7 @@ Follow the steps in order. Each one links to its own detailed guide.
 
 | Component | Status |
 |---|:---:|
-| VPS / Atom or OrionCMS / Arcturus database | ✅ |
+| VPS / Atom or OrionCMS / Polaris database | ✅ |
 | Imager | ✅ |
 | Cloudflare & SSL | ✅ |
 | Emulator | ✅ |
@@ -118,7 +118,7 @@ front-end issues, and Atom updates.
 **NitroV3 Community**
 
 Emulator help, Nitro V3 + renderer,<br/>
-Arcturus Extended, and gamedata.
+Polaris Emulator, and gamedata.
 
 <br/>
 
