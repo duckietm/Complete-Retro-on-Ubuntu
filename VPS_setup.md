@@ -60,7 +60,7 @@ chmod +x /etc/init.d/nginx
 
 If any pop-up screens appear, just press **OK**, also do them section by section!
 
-## Install PHP-FPM 8.4
+## Install PHP-FPM 8.5
 
 ```bash
 sudo apt install -y \
@@ -112,21 +112,42 @@ apt-get install -y mariadb-server
 ## Install Composer + Node.js + Yarn
 
 ```bash
-sudo apt-get update && sudo apt-get install -y ca-certificates curl gnupg
-
+apt-get update && apt-get install -y \
+  ca-certificates \
+  curl \
+  gnupg
+```
+```bash
+install -d -m 0755 /etc/apt/keyrings
+```
+```bash
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
   | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 
-NODE_MAJOR=24
+NODE_MAJOR=26
+
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" \
   | tee /etc/apt/sources.list.d/nodesource.list
-
-sudo apt-get update && sudo apt-get install -y nodejs
-
+```
+```bash
+apt-get update
+apt-get install -y nodejs
+```
+```bash
 curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
-sudo php /tmp/composer-setup.php --install-dir=/usr/bin --filename=composer
-
-npm install --global yarn
+php /tmp/composer-setup.php \
+  --install-dir=/usr/bin \
+  --filename=composer
+```
+```bash
+npm install -g corepack
+corepack enable
+```
+```bash
+node --version
+npm --version
+yarn --version
+composer --version
 ```
 
 ## SSH security (key-based authentication)
