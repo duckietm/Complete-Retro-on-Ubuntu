@@ -67,10 +67,10 @@ First, run the following commands to clone all the source repositories into plac
 git clone https://github.com/duckietm/Arcturus-Morningstar-Extended.git /var/www/emulator
 ```
 ```bash
-git clone https://github.com/duckietm/Nitro_Render_V3.git /var/www/Nitro_Render_V3
+git clone https://github.com/duckietm/Octane.git
 ```
 ```bash
-git clone https://github.com/duckietm/Nitro-V3.git /var/www/Nitro-V3
+git clone https://github.com/duckietm/Octane-Renderer.git
 ```
 
 ## Configure the emulator
