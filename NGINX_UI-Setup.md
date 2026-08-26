@@ -146,7 +146,7 @@ server {
 
     server_name example.com www.example.com;          # change to your domain
 
-    root  /var/www/Nitro-V3/dist;
+    root  /var/www/Octane/dist;
     index index.php index.html index.htm;
 
     autoindex     off;
@@ -216,7 +216,7 @@ server {
     }
 
     location /camera/ {
-        alias /var/www/Camera/;
+        alias /var/www/camera/;
 
         if ($request_method = OPTIONS) {
             add_header Access-Control-Allow-Origin   $cors_origin always;
