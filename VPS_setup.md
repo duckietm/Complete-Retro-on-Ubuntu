@@ -75,10 +75,9 @@ If any pop-up screens appear, just press **OK**.
 ## Install MariaDB 11.8
 
 ```bash
-apt-get install -y apt-transport-https curl
+apt-get install apt-transport-https curl
 mkdir -p /etc/apt/keyrings
-curl -o /etc/apt/keyrings/mariadb-keyring.pgp \
-  'https://mariadb.org/mariadb_release_signing_key.pgp'
+curl -o /etc/apt/keyrings/mariadb-keyring.asc 'https://mariadb.org/mariadb_release_signing_key.pgp'
 ```
 
 Create the MariaDB sources list:
@@ -90,17 +89,17 @@ vi /etc/apt/sources.list.d/mariadb.sources
 Press `i` to enter insert mode (you'll see `-- INSERT --` in the bottom-left), then paste:
 
 ```ini
-# MariaDB 11.8 repository list
+# MariaDB 12.3 repository list - created 2026-08-26 06:03 UTC
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
-URIs: https://ftp.nluug.nl/db/mariadb/repo/11.8/ubuntu
-Suites: noble
+# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+# URIs: https://deb.mariadb.org/12.3/ubuntu
+URIs: https://mirror.nl.mirhosting.net/mariadb/repo/12.3/ubuntu
+Suites: resolute
 Components: main main/debug
-Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+Signed-By: /etc/apt/keyrings/mariadb-keyring.asc
 ```
-
-> **Note on the `Suites:` line:** MariaDB's repo currently publishes for `noble` (Ubuntu 24.04). At the time of writing, no `resolute` (Ubuntu 26.04) suite is published yet — the `noble` packages run on 26.04 without issue. Once MariaDB publishes a 26.04 suite, switch this line to match.
 
 Press `ESC`, then type `:wq` and press Enter. Then install:
 
