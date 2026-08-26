@@ -72,7 +72,7 @@ sudo apt install -y \
 
 If any pop-up screens appear, just press **OK**.
 
-## Install MariaDB 11.8
+## Install MariaDB 12.3
 
 ```bash
 apt-get install apt-transport-https curl
