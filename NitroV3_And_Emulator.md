@@ -287,7 +287,7 @@ Finally, test that the emulator starts automatically after a reboot:
 reboot
 ```
 
-# Nitro V3 and Nitro Renderer
+# Octane and Octane Renderer
 
 We recommend using WinSCP to edit these files — it is much easier than editing them in the terminal.
 
