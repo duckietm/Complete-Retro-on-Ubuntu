@@ -291,7 +291,7 @@ reboot
 
 We recommend using WinSCP to edit these files — it is much easier than editing them in the terminal.
 
-Connect to the VPS and go to `/var/www/Nitro-V3/public/configuration`. Rename each `.example` file to `.json`:
+Connect to the VPS and go to `/var/www/Octane/public/configuration`. Rename each `.example` file to `.json`:
 
 - `client-mode.json`
 - `hotlooks.json`
@@ -439,13 +439,13 @@ Next, edit `client-mode.json`. Important: use the **WebSocket address** as `apiB
 }
 ```
 
-Once everything is configured, compile Nitro V3:
+Once everything is configured, compile Octane:
 
 ```shell
-cd /var/www/Nitro_Render_V3
-yarn install && yarn link
-cd /var/www/Nitro-V3/
-yarn install && yarn link "@nitrots/nitro-renderer"
+cd /var/www/Octane-Renderer
+yarn install
+cd /var/www/Octane
+yarn install
 yarn build
 ```
 
@@ -458,6 +458,7 @@ In the emulator directory there is a file called `config.ini`. The relevant WebS
 - `ws.enabled` — set to `true` to enable WebSocket support
 - `ws.host` — host IP. Leave at `0.0.0.0` in most cases
 - `ws.port` — host port. Can be any port, but read the Cloudflare section below if you want to proxy WSS traffic through Cloudflare
+- `ws.whitelist` — This is important, this is the domain of your websocket so if you run it on mydomain.com:2096 then mydomain.com (so not the 2096) or any subdomain
 - `ws.ip.header` — header used to obtain the real client IP when the server is behind a proxy. Usually `X-Forwarded-For`, or `CF-Connecting-IP` when behind Cloudflare
 
 ## Connecting to the emulator over Secure WebSockets (WSS)
