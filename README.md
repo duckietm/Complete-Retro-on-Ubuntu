@@ -111,15 +111,14 @@ front-end issues, and Atom updates.
 </td>
 <td align="center" width="50%">
 
-<img src="https://img.shields.io/badge/Emulator-Nitro%20V3%20%2B%20Arcturus%20Extended-E95420?style=for-the-badge&logo=java&logoColor=white" alt="NitroV3 Community"/>
+<img src="https://img.shields.io/badge/EMULATOR-Polaris%20Emulator-E95420?style=for-the-badge&logo=java&logoColor=white" alt="Octane Community"/>
 
 <br/><br/>
 
-**NitroV3 Community**
+**Octane Community**
 
-Emulator help, Nitro V3 + renderer,<br/>
+Emulator help, Octane + Octane Renderer,<br/>
 Polaris Emulator, and gamedata.
-
 <br/>
 
 <a href="https://discord.gg/vhsk4wQfH">
