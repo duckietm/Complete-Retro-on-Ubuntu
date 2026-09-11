@@ -64,7 +64,8 @@
 First, run the following commands to clone all the source repositories into place:
 
 ```bash
-git clone https://github.com/duckietm/Arcturus-Morningstar-Extended.git /var/www/emulator
+git clone https://github.com/duckietm/Polaris-Emulator.git /var/www/emulator
+
 ```
 ```bash
 git clone https://github.com/duckietm/Octane.git
