@@ -59,7 +59,7 @@
 └── Nitro/
 ```
 
-## Get Nitro and Nitro Renderer
+## Get Polaris / Octane and Octane Renderer
 
 First, run the following commands to clone all the source repositories into place:
 
