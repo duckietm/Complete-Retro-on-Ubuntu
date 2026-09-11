@@ -1,4 +1,4 @@
-# Install Nitro-V3
+# Install Octane and the Polaris Emulator
 
 ## Recommended folder structure
 
